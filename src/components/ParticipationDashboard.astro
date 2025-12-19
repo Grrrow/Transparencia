@@ -1,0 +1,304 @@
+---
+import { calculateParticipationStats } from "../utils/participationStats";
+import initiativesData from "../data/initiatives_detailed.json";
+import AbsenteeismRanking from "./AbsenteeismRanking.astro";
+
+const {
+    globalCommitment,
+    absenteeismRanking,
+    criticalAbsences,
+    brokenBlocks,
+    deputyRanking,
+    totalVoted,
+    totalPossibleVotes,
+    totalAbstentions,
+    totalNoVotes,
+} = calculateParticipationStats(initiativesData.iniciativas);
+
+const formatter = new Intl.NumberFormat("es-ES");
+
+// Calculate Percentages
+const pctAbstentions =
+    totalPossibleVotes > 0
+        ? ((totalAbstentions / totalPossibleVotes) * 100).toFixed(1)
+        : "0";
+const pctNoVotes =
+    totalPossibleVotes > 0
+        ? ((totalNoVotes / totalPossibleVotes) * 100).toFixed(1)
+        : "0";
+const pctVotesCastYesNo =
+    totalPossibleVotes > 0
+        ? (
+              ((totalVoted - totalAbstentions) / totalPossibleVotes) *
+              100
+          ).toFixed(1)
+        : "0";
+---
+
+<section class="participation-dashboard">
+    <div class="dashboard-header">
+        <h2>Participación Parlamentaria</h2>
+        <p>
+            ¿Quién va a trabajar? ¿Votan en bloque? Análisis de la disciplina de
+            voto.
+        </p>
+    </div>
+
+    {/* Metric Overview */}
+    <div class="commitment-banner">
+        <div class="stat">
+            <span class="val">{globalCommitment}%</span>
+            <span class="label">Compromiso del Hemiciclo</span>
+            <span class="sub">(Votos emitidos reales sobre 350 escaños)</span>
+            <span class="info-text">
+                De {formatter.format(totalPossibleVotes)} votos que se deben haber
+                emitido: el {pctVotesCastYesNo}% se emitieron, el {
+                    pctAbstentions
+                }% fueron abstenciones y el {pctNoVotes}% no se emitieron.
+            </span>
+        </div>
+    </div>
+
+    <div class="p-grid">
+        {/* Card 1: Absenteeism Podium */}
+        <AbsenteeismRanking data={deputyRanking} />
+
+        {/* Card 2: Critical Alerts */}
+        <div class="p-card alert-theme">
+            <h3>🚨 Votos Decisivos Perdidos</h3>
+            <p class="desc">
+                Iniciativas donde las ausencias superaron al margen de victoria.
+            </p>
+
+            <div class="alerts-list">
+                {
+                    criticalAbsences.map((item) => (
+                        <div class="alert-item">
+                            <div class="alert-head">
+                                <span class="alert-icon">⚠️</span>
+                                <span class="alert-stat">
+                                    {item.missing} no votaron
+                                </span>
+                            </div>
+                            <a
+                                href={item.initiative.enlace}
+                                class="alert-title"
+                            >
+                                {item.initiative.titulo}
+                            </a>
+                            <div class="alert-context">
+                                Margen de victoria: {item.margin} votos
+                            </div>
+                        </div>
+                    ))
+                }
+                {
+                    criticalAbsences.length === 0 && (
+                        <p class="empty-msg">
+                            No hubo votaciones críticas afectadas por ausencias.
+                        </p>
+                    )
+                }
+            </div>
+        </div>
+
+        {/* Card 3: Dissidence / Errors */}
+        <div class="p-card">
+            <h3>💔 Fugas y "Errores"</h3>
+            <p class="desc">
+                Votaciones donde un partido rompió su disciplina de voto.
+            </p>
+
+            <div class="fugas-list">
+                {
+                    brokenBlocks.map((item) => (
+                        <div class="fuga-item">
+                            <div class="fuga-head">
+                                <span class="party-tag">{item.party}</span>
+                            </div>
+                            <a href={item.initiative.enlace} class="fuga-title">
+                                {item.initiative.titulo}
+                            </a>
+                            <p class="fuga-detail">{item.details}</p>
+                        </div>
+                    ))
+                }
+                {
+                    brokenBlocks.length === 0 && (
+                        <p class="empty-msg">Sin fugas detectadas.</p>
+                    )
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .participation-dashboard {
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border-subtle);
+    }
+
+    .dashboard-header {
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    .dashboard-header h2 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+    .dashboard-header p {
+        color: var(--text-secondary);
+    }
+
+    .commitment-banner {
+        background: linear-gradient(
+            135deg,
+            var(--color-surface) 0%,
+            var(--surface-raised) 100%
+        );
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .stat .val {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+    .stat .label {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-secondary);
+    }
+    .stat .sub {
+        font-size: 0.9rem;
+        color: var(--text-tertiary);
+        margin-bottom: 0.5rem;
+    }
+    .stat .info-text {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        margin-top: 0.5rem;
+        max-width: 600px;
+        line-height: 1.5;
+    }
+
+    .p-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    @media (min-width: 1024px) {
+        .p-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    .p-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        font-weight: 800;
+    }
+    .desc {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-msg {
+        font-style: italic;
+        color: var(--text-tertiary);
+        font-size: 0.9rem;
+    }
+
+    .empty-msg {
+        font-style: italic;
+        color: var(--text-tertiary);
+        font-size: 0.9rem;
+    }
+
+    /* Alerts */
+    .alert-item {
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+        border-radius: 8px;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .alert-head {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #c2410c;
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+    .alert-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #431407;
+        text-decoration: none;
+        line-height: 1.3;
+    }
+    .alert-title:hover {
+        text-decoration: underline;
+    }
+    .alert-context {
+        font-size: 0.8rem;
+        color: #9a3412;
+    }
+
+    /* Fugas */
+    .fuga-item {
+        border-bottom: 1px solid var(--border-subtle);
+        padding-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .fuga-item:last-child {
+        border-bottom: none;
+    }
+    .party-tag {
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        padding: 0.2rem 0.6rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        align-self: flex-start;
+    }
+    .fuga-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        text-decoration: none;
+    }
+    .fuga-detail {
+        font-size: 0.85rem;
+        color: #dc2626;
+        font-style: italic;
+    }
+</style>

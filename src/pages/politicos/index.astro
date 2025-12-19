@@ -1,0 +1,42 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import PoliticianCard from "../../components/PoliticianCard.astro";
+import politicians from "../../data/politicians.json";
+---
+
+<Layout>
+    <div class="page-header">
+        <h1>Directorio de Políticos</h1>
+        <p>
+            Explora los perfiles de los representantes públicos, su actividad y
+            estadísticas.
+        </p>
+    </div>
+
+    <div class="grid">
+        {politicians.map((p) => <PoliticianCard politician={p} />)}
+    </div>
+</Layout>
+
+<style>
+    .page-header {
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+        color: var(--color-primary);
+    }
+
+    .page-header p {
+        font-size: 1.25rem;
+        color: var(--color-text-muted);
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+</style>

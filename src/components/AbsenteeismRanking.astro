@@ -1,0 +1,307 @@
+---
+interface DeputyRank {
+    name: string;
+    party: string;
+    count: number;
+    avatar?: string;
+}
+
+interface Props {
+    data: DeputyRank[];
+}
+
+const { data } = Astro.props;
+
+// Determine max value for progress bar normalization (default to 50 if low)
+const maxCount =
+    data.length > 0 ? Math.max(...data.map((d) => d.count), 50) : 50;
+
+function getInitials(name: string) {
+    if (!name) return "?";
+    // Usually "Surname, Name". Split by comma
+    const parts = name.split(",");
+    if (parts.length > 1) {
+        // Return Name Initial + First Surname Initial
+        const firstName = parts[1].trim()[0];
+        const surname = parts[0].trim()[0];
+        return `${firstName}${surname}`;
+    }
+    return name.substring(0, 2);
+}
+
+function getPartyColor(party: string) {
+    const p = party.toLowerCase();
+    if (p.includes("pp") || p.includes("popular")) return "blue";
+    if (p.includes("psoe") || p.includes("socialista")) return "red";
+    if (p.includes("vox")) return "green";
+    if (p.includes("sumar")) return "magenta";
+    return "default";
+}
+
+function getRankIcon(index: number) {
+    if (index === 0) return "🥇";
+    if (index === 1) return "🥈";
+    if (index === 2) return "🥉";
+    return `#${index + 1}`;
+}
+---
+
+<div class="ant-card">
+    <div class="ant-card-head">
+        <div class="header-content">
+            <div class="ant-card-head-title">🏆 Ranking de No Votaciones</div>
+            <div class="ant-card-subtitle">
+                Presentes pero en silencio: Diputados logados que no emitieron
+                voto
+            </div>
+        </div>
+    </div>
+    <div class="ant-card-body">
+        {
+            data.length === 0 && (
+                <div class="empty-state">Sin datos disponibles</div>
+            )
+        }
+
+        <ul class="ant-list">
+            {
+                data.map((deputy, index) => (
+                    <li class="ant-list-item">
+                        <div class="rank-col">
+                            <span class="rank-icon">{getRankIcon(index)}</span>
+                        </div>
+
+                        <div class="avatar-col">
+                            <div class="ant-avatar">
+                                {getInitials(deputy.name)}
+                            </div>
+                        </div>
+
+                        <div class="content-col">
+                            <div class="row-top">
+                                <span class="deputy-name">{deputy.name}</span>
+                                <span
+                                    class={`ant-tag tag-${getPartyColor(deputy.party)}`}
+                                >
+                                    {deputy.party
+                                        .replace("Grupo Parlamentario ", "")
+                                        .replace("en el Congreso", "")
+                                        .substring(0, 15)}
+                                </span>
+                            </div>
+                            <div class="row-bottom">
+                                <div
+                                    class="progress-wrap"
+                                    title={`${deputy.count} votaciones en las que figura como 'No Vota'`}
+                                >
+                                    <div class="progress-track">
+                                        <div
+                                            class="progress-bar"
+                                            style={`width: ${(deputy.count / maxCount) * 100}%`}
+                                        />
+                                    </div>
+                                    <span class="progress-text">
+                                        {deputy.count} no votos
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</div>
+
+<style>
+    .ant-card {
+        background: #fff;
+        border: 1px solid #f0f0f0;
+        border-radius: 8px;
+        font-family:
+            -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+            "Helvetica Neue", Arial, sans-serif;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+    }
+
+    .ant-card-head {
+        display: flex;
+        justify-content: center;
+        min-height: auto;
+        padding: 16px 24px;
+        color: rgba(0, 0, 0, 0.88);
+        font-weight: 600;
+        font-size: 16px;
+        background: transparent;
+        border-bottom: 1px solid #f0f0f0;
+        align-items: center;
+    }
+
+    .header-content {
+        text-align: center;
+        width: 100%;
+    }
+
+    .ant-card-subtitle {
+        font-size: 12px;
+        color: #8c8c8c;
+        font-weight: 400;
+        margin-top: 4px;
+    }
+
+    .ant-card-body {
+        padding: 24px;
+    }
+
+    .ant-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .ant-list-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .ant-list-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .rank-col {
+        min-width: 30px;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #8c8c8c;
+    }
+
+    .avatar-col {
+        flex-shrink: 0;
+    }
+
+    .ant-avatar {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 50%;
+        background: #ccc;
+        color: #fff;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        background: #1890ff; /* Ant default blue */
+    }
+
+    .content-col {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0; /* Enables text truncation flex child */
+    }
+
+    .row-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    .deputy-name {
+        font-weight: 600;
+        color: rgba(0, 0, 0, 0.88);
+        font-size: 14px;
+        line-height: 1.2;
+    }
+
+    /* Tags */
+    .ant-tag {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0 7px;
+        color: rgba(0, 0, 0, 0.88);
+        font-size: 10px;
+        line-height: 20px;
+        white-space: nowrap;
+        background: #fafafa;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+        text-transform: uppercase;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .tag-blue {
+        color: #1677ff;
+        background: #e6f4ff;
+        border-color: #91caff;
+    } /* PP */
+    .tag-red {
+        color: #cf1322;
+        background: #fff1f0;
+        border-color: #ffa39e;
+    } /* PSOE */
+    .tag-green {
+        color: #389e0d;
+        background: #f6ffed;
+        border-color: #b7eb8f;
+    } /* VOX */
+    .tag-magenta {
+        color: #c41d7f;
+        background: #fff0f6;
+        border-color: #ffadd2;
+    } /* SUMAR */
+    .tag-default {
+        color: #595959;
+        background: #fafafa;
+        border-color: #d9d9d9;
+    }
+
+    /* Progress */
+    .row-bottom {
+        width: 100%;
+    }
+
+    .progress-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: help;
+    }
+
+    .progress-track {
+        flex: 1;
+        height: 6px;
+        background: #f5f5f5;
+        border-radius: 100px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background: #ff4d4f; /* Red for absenteeism */
+        border-radius: 100px;
+        transition: width 0.3s ease;
+    }
+
+    .progress-text {
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.45);
+        white-space: nowrap;
+        width: 70px;
+        text-align: right;
+    }
+
+    .empty-state {
+        text-align: center;
+        color: #999;
+        padding: 2rem;
+    }
+</style>

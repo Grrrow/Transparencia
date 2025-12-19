@@ -1,0 +1,287 @@
+---
+import { getRankings, getAffinity } from "../utils/consensusStats";
+import initiativesData from "../data/initiatives_detailed.json";
+import ConsensusBar from "./ConsensusBar.astro";
+
+const { topConsensus, topDivisive } = getRankings(initiativesData.iniciativas);
+
+// Affinity Stats (Hardcoded targets for "Partner Finder" based on Spanish context)
+// Reference is usually Government (PSOE - GS)
+const partners = [
+    { code: "GV (EAJ-PNV)", name: "PNV" },
+    { code: "GJxCAT", name: "Junts" },
+    { code: "GEH Bildu", name: "Bildu" },
+    { code: "GR", name: "ERC" }, // Check actual code if GR is ERC (Republican)
+];
+
+const affinityStats = partners.map((p) => ({
+    ...p,
+    affinity: getAffinity(initiativesData.iniciativas, p.code, "GS"),
+}));
+---
+
+<section class="consensus-dashboard">
+    <div class="dashboard-header">
+        <h2>Radiografía del Consenso 2025</h2>
+        <p>Análisis de la tensión parlamentaria y la geometría variable.</p>
+    </div>
+
+    <div class="grid-cols">
+        {/* Col 1: Top Consensus */}
+        <div class="ranking-card">
+            <h3>🏆 Mayor Consenso</h3>
+            <div class="list">
+                {
+                    topConsensus.map((i) => (
+                        <div class="list-item">
+                            <div class="item-head">
+                                <span class="pill green">{i.label}</span>
+                                <span class="date">{i.fecha_presentado}</span>
+                            </div>
+                            <a href={i.enlace} class="item-title">
+                                {i.titulo}
+                            </a>
+                            <div class="votes-summary">
+                                <span class="v-pill yes">
+                                    👍 {i.voting?.yes || 0}
+                                </span>
+                                <span class="v-pill no">
+                                    👎 {i.voting?.no || 0}
+                                </span>
+                            </div>
+                            <ConsensusBar
+                                value={i.consensusIndex}
+                                label="Consenso"
+                            />
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+
+        {/* Col 2: Top Divisive */}
+        <div class="ranking-card">
+            <h3>⚡ Mayor División</h3>
+            <div class="list">
+                {
+                    topDivisive.map((i) => (
+                        <div class="list-item">
+                            <div class="item-head">
+                                <span class="pill red">{i.label}</span>
+                                <span class="date">{i.fecha_presentado}</span>
+                            </div>
+                            <a href={i.enlace} class="item-title">
+                                {i.titulo}
+                            </a>
+                            <div class="votes-summary">
+                                <span class="v-pill yes">
+                                    👍 {i.voting?.yes || 0}
+                                </span>
+                                <span class="v-pill no">
+                                    👎 {i.voting?.no || 0}
+                                </span>
+                            </div>
+                            <ConsensusBar
+                                value={i.consensusIndex}
+                                label="Consenso"
+                            />
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+
+        {/* Col 3: Partner Finder (Affinity) */}
+        <div class="affinity-card">
+            <h3>🤝 Buscador de Socios</h3>
+            <p class="desc">
+                Porcentaje de coincidencia de voto con el Gobierno (PSOE).
+            </p>
+
+            <div class="partners-list">
+                {
+                    affinityStats.map((p) => (
+                        <div class="partner-row">
+                            <span class="p-name">{p.name}</span>
+                            <div class="p-bar-track">
+                                <div
+                                    class="p-bar-fill"
+                                    style={`width: ${p.affinity}%`}
+                                />
+                            </div>
+                            <span class="p-val">{p.affinity}%</span>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .consensus-dashboard {
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border-subtle);
+    }
+
+    .dashboard-header {
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .dashboard-header h2 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .dashboard-header p {
+        color: var(--text-secondary);
+    }
+
+    .grid-cols {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    @media (min-width: 1024px) {
+        .grid-cols {
+            grid-template-columns: 1fr 1fr 300px;
+        }
+    }
+
+    /* Cards */
+    .ranking-card,
+    .affinity-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        font-weight: 800;
+    }
+
+    /* Lists */
+    .list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .list-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+    .list-item:last-child {
+        border-bottom: none;
+    }
+
+    .item-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .pill {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+    }
+    .pill.green {
+        background: #d1fae5;
+        color: #065f46;
+    }
+    .pill.red {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .date {
+        font-size: 0.8rem;
+        color: var(--text-tertiary);
+        font-family: monospace;
+    }
+
+    .item-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        text-decoration: none;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .item-title:hover {
+        text-decoration: underline;
+    }
+
+    .votes-summary {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-top: 0.25rem;
+    }
+
+    .v-pill.yes {
+        color: #10b981;
+    }
+    .v-pill.no {
+        color: #ef4444;
+    }
+
+    /* Affinity */
+    .affinity-card .desc {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+
+    .partners-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    .partner-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .p-name {
+        width: 50px;
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+    .p-val {
+        width: 40px;
+        font-weight: 700;
+        text-align: right;
+        font-size: 0.9rem;
+    }
+
+    .p-bar-track {
+        flex: 1;
+        height: 8px;
+        background: var(--surface-raised);
+        border-radius: 99px;
+        overflow: hidden;
+    }
+    .p-bar-fill {
+        height: 100%;
+        background: var(--text-primary);
+        border-radius: 99px;
+    }
+</style>

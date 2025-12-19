@@ -1,0 +1,356 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import InitiativeRow from "../../components/InitiativeRow.astro";
+
+import initiativesData from "../../data/initiatives_detailed.json";
+
+const initiatives = initiativesData.iniciativas;
+
+// Sort by date descending (assuming format DD/MM/YYYY)
+const sortedInitiatives = [...initiatives].sort((a, b) => {
+    const dateA = new Date(a.fecha_presentado.split("/").reverse().join("-"));
+    const dateB = new Date(b.fecha_presentado.split("/").reverse().join("-"));
+    return dateB.getTime() - dateA.getTime();
+});
+// Extract unique values for filters
+const authors = [
+    ...new Set(sortedInitiatives.map((i) => i.autor).filter(Boolean)),
+].sort();
+const types = [
+    ...new Set(sortedInitiatives.map((i) => i.tipo_iniciativa).filter(Boolean)),
+].sort();
+const statuses = [
+    ...new Set(sortedInitiatives.map((i) => i.resultado_tram).filter(Boolean)),
+].sort();
+
+// Helper for type labels in dropdown
+const getTypeLabel = (type: string) => {
+    if (type === "Proyecto_ley") return "Proyecto de Ley";
+    if (type === "Decreto_ley") return "Real Decreto-Ley";
+    if (type.includes("Proposicion_ley")) return "Proposición de Ley";
+    return type.replace(/_/g, " ");
+};
+---
+
+<Layout title="Iniciativas Legislativas | Transparencia Política España">
+    <div class="page-wrapper">
+        <main class="main-content">
+            <div class="content-container">
+                <header class="page-header">
+                    <h1 class="page-title">Iniciativas Legislativas</h1>
+                    <p class="page-subtitle">
+                        Explora las últimas iniciativas presentadas en el
+                        Congreso, desde Proyectos de Ley hasta Reales Decretos.
+                    </p>
+                </header>
+
+                {/* Dashboard Stats Section */}
+
+                {/* Filters Bar */}
+                <div class="filters-bar">
+                    <div class="filter-group">
+                        <label for="filter-author">Autor:</label>
+                        <select id="filter-author" class="filter-select">
+                            <option value="all">Todos los autores</option>
+                            {
+                                authors.map((author) => (
+                                    <option value={author}>{author}</option>
+                                ))
+                            }
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filter-type">Tipo:</label>
+                        <select id="filter-type" class="filter-select">
+                            <option value="all">Todos los tipos</option>
+                            {
+                                types.map((type) => (
+                                    <option value={type}>
+                                        {getTypeLabel(type)}
+                                    </option>
+                                ))
+                            }
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filter-status">Estado:</label>
+                        <select id="filter-status" class="filter-select">
+                            <option value="all">Todos los estados</option>
+                            {
+                                statuses.map((status) => (
+                                    <option value={status}>{status}</option>
+                                ))
+                            }
+                        </select>
+                    </div>
+
+                    <div class="results-count">
+                        <span id="visible-count"
+                            >{sortedInitiatives.length}</span
+                        > resultados
+                    </div>
+                </div>
+
+                <div class="initiatives-list" id="initiatives-list">
+                    {
+                        sortedInitiatives.map((initiative) => (
+                            <div
+                                class="initiative-item"
+                                data-author={initiative.autor}
+                                data-type={initiative.tipo_iniciativa}
+                                data-status={initiative.resultado_tram || ""}
+                            >
+                                <InitiativeRow initiative={initiative} />
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <div id="no-results" class="no-results" style="display: none">
+                    <p>
+                        No se encontraron iniciativas con los filtros
+                        seleccionados.
+                    </p>
+                    <button id="clear-filters" class="clear-btn"
+                        >Limpiar filtros</button
+                    >
+                </div>
+            </div>
+        </main>
+    </div>
+</Layout>
+
+<script>
+    // Client-side filtering logic
+    const authorSelect = document.getElementById(
+        "filter-author",
+    ) as HTMLSelectElement;
+    const typeSelect = document.getElementById(
+        "filter-type",
+    ) as HTMLSelectElement;
+    const statusSelect = document.getElementById(
+        "filter-status",
+    ) as HTMLSelectElement;
+    const listItems = document.querySelectorAll(".initiative-item");
+    const noResults = document.getElementById("no-results");
+    const clearBtn = document.getElementById("clear-filters");
+    const countSpan = document.getElementById("visible-count");
+
+    function filterInitiatives() {
+        const authorValue = authorSelect.value;
+        const typeValue = typeSelect.value;
+        const statusValue = statusSelect.value;
+
+        let visibleCount = 0;
+
+        listItems.forEach((item) => {
+            const el = item as HTMLElement;
+            const itemAuthor = el.dataset.author || "";
+            const itemType = el.dataset.type || "";
+            const itemStatus = el.dataset.status || "";
+
+            const matchesAuthor =
+                authorValue === "all" || itemAuthor === authorValue;
+            const matchesType = typeValue === "all" || itemType === typeValue;
+            const matchesStatus =
+                statusValue === "all" || itemStatus === statusValue;
+
+            if (matchesAuthor && matchesType && matchesStatus) {
+                el.style.display = "block";
+                visibleCount++;
+            } else {
+                el.style.display = "none";
+            }
+        });
+
+        // Update UI
+        if (countSpan) countSpan.textContent = visibleCount.toString();
+
+        if (noResults) {
+            noResults.style.display = visibleCount === 0 ? "block" : "none";
+        }
+    }
+
+    // Event Listeners
+    authorSelect?.addEventListener("change", filterInitiatives);
+    typeSelect?.addEventListener("change", filterInitiatives);
+    statusSelect?.addEventListener("change", filterInitiatives);
+
+    clearBtn?.addEventListener("click", () => {
+        if (authorSelect) authorSelect.value = "all";
+        if (typeSelect) typeSelect.value = "all";
+        if (statusSelect) statusSelect.value = "all";
+        filterInitiatives();
+    });
+</script>
+
+<style>
+    .page-wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .main-content {
+        flex: 1;
+        padding: 2rem 1rem;
+        background: var(--background);
+    }
+
+    .content-container {
+        max-width: 1600px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .page-header {
+        margin-bottom: 2.5rem;
+        text-align: center;
+    }
+
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.02em;
+    }
+
+    .page-subtitle {
+        color: var(--text-secondary);
+        font-size: 1.125rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* Filter Bar Styles */
+    .filters-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        padding: 0.5rem 0; /* Minimized container padding */
+        margin-bottom: 3rem;
+        align-items: flex-end;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        flex: 1;
+        min-width: 220px;
+    }
+
+    .filter-group label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--text-tertiary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-left: 0.5rem; /* Align with input text */
+    }
+
+    .filter-select {
+        width: 100%;
+        appearance: none;
+        -webkit-appearance: none;
+        padding: 0.85rem 1.25rem;
+        padding-right: 2.5rem;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        background-color: var(--surface);
+        color: var(--text-primary);
+        font-family: inherit;
+        font-size: 0.95rem;
+        font-weight: 500;
+        cursor: pointer;
+        outline: none;
+        transition: all 0.2s ease;
+        box-shadow: var(--shadow-sm);
+
+        /* Custom Chevron */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1.2rem;
+    }
+
+    .filter-select:hover {
+        background-color: var(--surface-raised);
+        box-shadow: var(--shadow-md);
+    }
+
+    .filter-select:focus {
+        background-color: var(--surface);
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent), transparent 90%);
+    }
+
+    .results-count {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-left: auto;
+        padding-bottom: 1rem; /* Align visual baseline */
+        min-width: 100px;
+        text-align: right;
+    }
+
+    .initiatives-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0; /* Rows will have their own borders */
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden; /* Clips corners */
+    }
+
+    /* Reset for spacing issues if any */
+    .initiative-item {
+        display: block;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 4rem;
+        color: var(--text-secondary);
+        background: var(--surface);
+        border-radius: 12px;
+        border: 1px dashed var(--border);
+    }
+
+    .clear-btn {
+        margin-top: 1rem;
+        padding: 0.75rem 1.5rem;
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--text-primary);
+        transition: all 0.2s;
+    }
+    .clear-btn:hover {
+        background: var(--border);
+    }
+
+    @media (max-width: 640px) {
+        .page-title {
+            font-size: 2rem;
+        }
+        .filters-bar {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .results-count {
+            margin-left: 0;
+            padding-top: 0;
+            text-align: center;
+        }
+    }
+</style>

@@ -1,0 +1,318 @@
+---
+import partyStats from "../data/party_stats.json";
+
+interface Props {
+    initiative: {
+        titulo: string;
+        fecha_presentado: string;
+        autor: string;
+        tipo_iniciativa: string;
+        resultado_tram?: string;
+        enlace: string;
+        voting?: {
+            exists: boolean;
+            yes: number | null;
+            no: number | null;
+            abstentions: number | null;
+        };
+    };
+}
+
+const { initiative } = Astro.props;
+
+// Helper to format date
+const formatDate = (dateStr: string) => {
+    return new Date(dateStr.split("/").reverse().join("-")).toLocaleDateString(
+        "es-ES",
+        {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        },
+    );
+};
+
+// Helper to get party color
+const getPartyColor = (authorName: string) => {
+    const party = partyStats.profiles.find(
+        (p) =>
+            p.name === authorName ||
+            authorName.includes(p.name) ||
+            authorName.includes(p.code),
+    );
+    return party ? party.color : "#666666"; // Default gray
+};
+
+const partyColor = getPartyColor(initiative.autor);
+
+// Helper for initiative type tag
+const getTypeLabel = (type: string) => {
+    if (type === "Proyecto_ley") return "Proyecto de Ley";
+    if (type === "Decreto_ley") return "Real Decreto-Ley";
+    if (type.includes("Proposicion_ley")) return "Proposición de Ley";
+    return type.replace(/_/g, " ");
+};
+
+const totalVotes =
+    (initiative.voting?.yes || 0) +
+    (initiative.voting?.no || 0) +
+    (initiative.voting?.abstentions || 0);
+
+const yesPercent = totalVotes
+    ? ((initiative.voting?.yes || 0) / totalVotes) * 100
+    : 0;
+const noPercent = totalVotes
+    ? ((initiative.voting?.no || 0) / totalVotes) * 100
+    : 0;
+const absPercent = totalVotes
+    ? ((initiative.voting?.abstentions || 0) / totalVotes) * 100
+    : 0;
+---
+
+<article class="initiative-card">
+    <div class="card-header">
+        <div class="meta-top">
+            <span class="type-tag"
+                >{getTypeLabel(initiative.tipo_iniciativa)}</span
+            >
+            <span class="date">{formatDate(initiative.fecha_presentado)}</span>
+        </div>
+        <h3 class="title">
+            <a
+                href={initiative.enlace}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                {initiative.titulo}
+            </a>
+        </h3>
+    </div>
+
+    <div class="card-body">
+        <div class="author-row">
+            <span class="author-dot" style={`background-color: ${partyColor}`}
+            ></span>
+            <span class="author-name">{initiative.autor}</span>
+        </div>
+
+        {
+            initiative.resultado_tram && (
+                <div class="outcome-row">
+                    <span class="label">Estado:</span>
+                    <span class="value">{initiative.resultado_tram}</span>
+                </div>
+            )
+        }
+
+        {
+            initiative.voting?.exists && totalVotes > 0 && (
+                <div class="voting-section">
+                    <div class="voting-bar">
+                        <div
+                            class="segment yes"
+                            style={`width: ${yesPercent}%`}
+                            title={`A favor: ${initiative.voting.yes}`}
+                        />
+                        <div
+                            class="segment no"
+                            style={`width: ${noPercent}%`}
+                            title={`En contra: ${initiative.voting.no}`}
+                        />
+                        <div
+                            class="segment abs"
+                            style={`width: ${absPercent}%`}
+                            title={`Abstenciones: ${initiative.voting.abstentions}`}
+                        />
+                    </div>
+                    <div class="voting-legend">
+                        <span class="legend-item">
+                            <span class="dot yes" />
+                            Sí ({initiative.voting.yes})
+                        </span>
+                        <span class="legend-item">
+                            <span class="dot no" />
+                            No ({initiative.voting.no})
+                        </span>
+                        <span class="legend-item">
+                            <span class="dot abs" />
+                            Abs ({initiative.voting.abstentions})
+                        </span>
+                    </div>
+                </div>
+            )
+        }
+    </div>
+
+    <div class="card-footer">
+        <a href={initiative.enlace} class="details-link" target="_blank">
+            Ver documento oficial &rarr;
+        </a>
+    </div>
+</article>
+
+<style>
+    .initiative-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .initiative-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .meta-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    .type-tag {
+        background: var(--surface-sunken);
+        color: var(--text-secondary);
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        font-weight: 500;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .date {
+        color: var(--text-tertiary);
+    }
+
+    .title {
+        font-size: 1.125rem;
+        line-height: 1.5;
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .title a {
+        color: var(--text-primary);
+        text-decoration: none;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .title a:hover {
+        color: var(--accent);
+    }
+
+    .author-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .author-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .author-name {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    .outcome-row {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .outcome-row .label {
+        color: var(--text-tertiary);
+    }
+
+    .voting-section {
+        margin-top: auto;
+    }
+
+    .voting-bar {
+        height: 8px;
+        background: var(--surface-sunken);
+        border-radius: 4px;
+        display: flex;
+        overflow: hidden;
+        margin-bottom: 0.5rem;
+    }
+
+    .segment {
+        height: 100%;
+    }
+
+    .segment.yes {
+        background-color: #10b981;
+    }
+    .segment.no {
+        background-color: #ef4444;
+    }
+    .segment.abs {
+        background-color: #f59e0b;
+    }
+
+    .voting-legend {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.75rem;
+        color: var(--text-tertiary);
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+    .dot.yes {
+        background-color: #10b981;
+    }
+    .dot.no {
+        background-color: #ef4444;
+    }
+    .dot.abs {
+        background-color: #f59e0b;
+    }
+
+    .card-footer {
+        border-top: 1px solid var(--border);
+        padding-top: 1rem;
+        margin-top: auto;
+    }
+
+    .details-link {
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .details-link:hover {
+        text-decoration: underline;
+    }
+</style>

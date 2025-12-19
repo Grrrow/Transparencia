@@ -1,0 +1,409 @@
+---
+import partyStats from "../data/party_stats.json";
+
+interface Props {
+    initiative: {
+        titulo: string;
+        fecha_presentado: string;
+        autor: string;
+        tipo_iniciativa: string;
+        resultado_tram?: string;
+        enlace: string;
+        voting?: {
+            exists: boolean;
+            yes: number | null;
+            no: number | null;
+            abstentions: number | null;
+            result?: {
+                desglose?: {
+                    yes?: Record<string, any>;
+                    no?: Record<string, any>;
+                    abstention?: Record<string, any>;
+                };
+            };
+        };
+    };
+}
+
+const { initiative } = Astro.props;
+
+const formatDate = (dateStr: string) => {
+    return new Date(dateStr.split("/").reverse().join("-")).toLocaleDateString(
+        "es-ES",
+        {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        },
+    );
+};
+
+const getPartyConfig = (codeOrName: string) => {
+    const party = partyStats.profiles.find(
+        (p) => p.code === codeOrName || p.name === codeOrName,
+    );
+    return party || { color: "#666", code: codeOrName?.slice(0, 4) };
+};
+
+const authorConfig = getPartyConfig(initiative.autor);
+
+const getTypeLabel = (type: string) => {
+    if (type === "Proyecto_ley") return "Proyecto de Ley";
+    if (type === "Decreto_ley") return "Real Decreto-Ley";
+    if (type.includes("Proposicion_ley")) return "Proposición de Ley";
+    return type.replace(/_/g, " ");
+};
+
+const getStatusColor = (status: string) => {
+    // Simple mock logic for status colors
+    if (status?.includes("Convalidado") || status?.includes("Aprobado"))
+        return "#10B981"; // Green
+    if (status?.includes("Derogado") || status?.includes("Rechazado"))
+        return "#EF4444"; // Red
+    return "#3B82F6"; // Blue default
+};
+
+const statusColor = getStatusColor(initiative.resultado_tram || "");
+---
+
+<article class="initiative-strip-card">
+    {/* 1. Vertical Strip */}
+    <div class="visual-strip" style={`background-color: ${authorConfig.color}`}>
+    </div>
+
+    {/* 2. Main Content */}
+    <div class="content-section">
+        <div class="meta-header">
+            <span class="type-pill"
+                >{getTypeLabel(initiative.tipo_iniciativa)}</span
+            >
+            <span class="date">{formatDate(initiative.fecha_presentado)}</span>
+        </div>
+
+        <h3 class="title">
+            <a
+                href={initiative.enlace}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                {initiative.titulo}
+            </a>
+        </h3>
+
+        <div class="meta-footer">
+            <div class="author-block">
+                <span class="label">Autor:</span>
+                <span class="value" style={`color: ${authorConfig.color}`}
+                    >{initiative.autor}</span
+                >
+            </div>
+
+            {
+                initiative.resultado_tram && (
+                    <div class="status-block">
+                        <span
+                            class="status-dot-solid"
+                            style={`background-color: ${statusColor}`}
+                        />
+                        <span class="value">{initiative.resultado_tram}</span>
+                    </div>
+                )
+            }
+            <a href={initiative.enlace} class="link-doc" target="_blank"
+                >Documento Oficial &rarr;</a
+            >
+        </div>
+    </div>
+
+    {/* 3. Voting Dashboard (Desktop Side Panel / Mobile Bottom) */}
+    {
+        initiative.voting?.exists && (
+            <div class="voting-section">
+                {/* Yes Votes */}
+                <div class="v-column yes">
+                    <div class="v-head">
+                        <span class="v-num">{initiative.voting.yes}</span>
+                        <span class="v-icon">👍</span>
+                    </div>
+                    <div class="v-pills">
+                        {initiative.voting.result?.desglose?.yes &&
+                            Object.entries(
+                                initiative.voting.result.desglose.yes,
+                            ).map(([code, count]) => (
+                                <span
+                                    class="p-pill"
+                                    style={`--pc: ${getPartyConfig(code)?.color || "#999"}`}
+                                >
+                                    {code}
+                                </span>
+                            ))}
+                    </div>
+                </div>
+
+                {/* No Votes */}
+                <div class="v-column no">
+                    <div class="v-head">
+                        <span class="v-num">{initiative.voting.no}</span>
+                        <span class="v-icon">👎</span>
+                    </div>
+                    <div class="v-pills">
+                        {initiative.voting.result?.desglose?.no &&
+                            Object.entries(
+                                initiative.voting.result.desglose.no,
+                            ).map(([code, count]) => (
+                                <span
+                                    class="p-pill"
+                                    style={`--pc: ${getPartyConfig(code)?.color || "#999"}`}
+                                >
+                                    {code}
+                                </span>
+                            ))}
+                    </div>
+                </div>
+
+                {/* Abstentions */}
+                <div class="v-column abs">
+                    <div class="v-head">
+                        <span class="v-num">
+                            {initiative.voting.abstentions}
+                        </span>
+                        <span class="v-icon">✋</span>
+                    </div>
+                    <div class="v-pills">
+                        {initiative.voting.result?.desglose?.abstention &&
+                            Object.entries(
+                                initiative.voting.result.desglose.abstention,
+                            ).map(([code, count]) => (
+                                <span
+                                    class="p-pill"
+                                    style={`--pc: ${getPartyConfig(code)?.color || "#999"}`}
+                                >
+                                    {code}
+                                </span>
+                            ))}
+                    </div>
+                </div>
+            </div>
+        )
+    }
+</article>
+
+<style>
+    .initiative-strip-card {
+        display: flex;
+        flex-direction: column;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 2rem;
+        position: relative;
+        transition:
+            box-shadow 0.2s,
+            transform 0.2s;
+    }
+    .initiative-strip-card:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-2px);
+    }
+
+    @media (min-width: 1024px) {
+        .initiative-strip-card {
+            flex-direction: row;
+        }
+    }
+
+    /* Vertical Strip */
+    .visual-strip {
+        height: 6px;
+        width: 100%;
+    }
+    @media (min-width: 1024px) {
+        .visual-strip {
+            width: 8px;
+            height: auto;
+            flex-shrink: 0;
+        }
+    }
+
+    /* Main Content */
+    .content-section {
+        flex: 1;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .meta-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .type-pill {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        padding: 0.25rem 0.75rem;
+        background: var(--text-primary);
+        color: var(--background);
+        border-radius: 4px;
+    }
+
+    .date {
+        font-family: var(--font-mono, monospace);
+        color: var(--text-tertiary);
+        font-size: 0.9rem;
+    }
+
+    .title {
+        font-size: 1.75rem;
+        line-height: 1.25;
+        font-weight: 800;
+        margin: 0;
+        letter-spacing: -0.02em;
+    }
+
+    .title a {
+        color: var(--text-primary);
+        text-decoration: none;
+        background-image: linear-gradient(
+            var(--text-primary),
+            var(--text-primary)
+        );
+        background-position: 0% 100%;
+        background-repeat: no-repeat;
+        background-size: 0% 1px;
+        transition: background-size 0.2s;
+    }
+    .title a:hover {
+        background-size: 100% 2px;
+    }
+
+    .meta-footer {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 2rem;
+        padding-top: 1.5rem;
+        margin-top: auto;
+        border-top: 1px solid var(--border-subtle, #f3f3f3);
+    }
+
+    .author-block,
+    .status-block {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .label {
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--text-tertiary);
+    }
+
+    .value {
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+
+    .status-dot-solid {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+    }
+
+    .link-doc {
+        margin-left: auto;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--accent);
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .link-doc:hover {
+        text-decoration: underline;
+    }
+
+    /* Voting Section */
+    .voting-section {
+        padding: 2rem;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        background: var(--surface); /* Same bg, separated by border/space */
+        border-top: 1px solid var(--border);
+    }
+
+    @media (min-width: 1024px) {
+        .voting-section {
+            width: 350px;
+            flex-shrink: 0;
+            border-top: none;
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 2rem;
+        }
+    }
+
+    .v-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.5rem;
+    }
+
+    .v-head {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .v-num {
+        font-size: 1.5rem;
+        font-weight: 800;
+        line-height: 1;
+    }
+    .v-icon {
+        font-size: 1rem;
+        opacity: 0.7;
+    }
+
+    .yes .v-num {
+        color: #10b981;
+    }
+    .no .v-num {
+        color: #ef4444;
+    }
+    .abs .v-num {
+        color: #f59e0b;
+    }
+
+    .v-pills {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.35rem;
+    }
+
+    .p-pill {
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+        background: white;
+        color: var(--pc);
+        border: 1px solid color-mix(in srgb, var(--pc), transparent 70%);
+        min-width: 2.5rem;
+    }
+</style>

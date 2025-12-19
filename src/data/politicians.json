@@ -1,0 +1,41 @@
+[
+  {
+    "id": "1",
+    "name": "Elena García",
+    "party": "Partido Progresista",
+    "role": "Diputada por Madrid",
+    "avatar": "https://i.pravatar.cc/300?img=1",
+    "bio": "Abogada especialista en derecho civil, comprometida con la digitalización de la administración pública.",
+    "stats": {
+      "proposals": 12,
+      "projects": 3,
+      "decrees": 0
+    }
+  },
+  {
+    "id": "2",
+    "name": "Javier Rodríguez",
+    "party": "Unión Liberal",
+    "role": "Diputado por Valencia",
+    "avatar": "https://i.pravatar.cc/300?img=11",
+    "bio": "Economista con experiencia en el sector privado. Enfocado en políticas fiscales y fomento del empleo joven.",
+    "stats": {
+      "proposals": 5,
+      "projects": 1,
+      "decrees": 2
+    }
+  },
+  {
+    "id": "3",
+    "name": "María López",
+    "party": "Eco Verde",
+    "role": "Diputada por Sevilla",
+    "avatar": "https://i.pravatar.cc/300?img=5",
+    "bio": "Activista medioambiental. Trabaja en propuestas para la transición energética y la protección de espacios naturales.",
+    "stats": {
+      "proposals": 28,
+      "projects": 8,
+      "decrees": 0
+    }
+  }
+]

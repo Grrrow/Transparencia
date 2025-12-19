@@ -1,0 +1,224 @@
+---
+import { calculateDashboardStats } from "../utils/dashboardStats";
+import initiativesData from "../data/initiatives_detailed.json";
+
+const stats = calculateDashboardStats(initiativesData.iniciativas);
+
+const chartData = {
+    labels: ["Éxito", "Fracaso", "Abandono"],
+    datasets: [
+        {
+            data: [
+                stats.breakdown.success,
+                stats.breakdown.failure,
+                stats.breakdown.neutral,
+            ],
+            backgroundColor: ["#10B981", "#EF4444", "#F59E0B"],
+            borderWidth: 0,
+            hoverOffset: 4,
+        },
+    ],
+};
+---
+
+<section class="dashboard-stats">
+    <div class="kpi-grid">
+        {/* KPI: Global Success */}
+        <div class="kpi-card highlight">
+            <div class="kpi-label">Tasa de Éxito Global</div>
+            <div class="kpi-value">{stats.globalSuccessRate}%</div>
+            <div class="kpi-sub">De iniciativas finalizadas</div>
+        </div>
+
+        {/* KPI: Efficiency Comparison */}
+        <div class="kpi-card">
+            <div class="kpi-label">Efectividad Gobierno</div>
+            <div class="kpi-value gov">
+                {stats.authorEfficiency.gobierno.rate}%
+            </div>
+            <div class="kpi-sub">
+                vs {stats.authorEfficiency.groups.rate}% Grupos
+            </div>
+            <div class="progress-bar">
+                <div
+                    class="progress-fill"
+                    style={`width: ${stats.authorEfficiency.gobierno.rate}%`}
+                >
+                </div>
+            </div>
+        </div>
+
+        {/* Chart: Outcomes */}
+        <div class="chart-card">
+            <div class="chart-header">Balance de Trámites</div>
+            <div class="chart-container">
+                <canvas
+                    id="outcomesChart"
+                    data-chart={JSON.stringify(chartData)}></canvas>
+            </div>
+            <div class="chart-legend">
+                <div class="legend-item">
+                    <span class="dot success"></span>Éxito
+                </div>
+                <div class="legend-item">
+                    <span class="dot failure"></span>Fracaso
+                </div>
+                <div class="legend-item">
+                    <span class="dot neutral"></span>Otros
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    import Chart from "chart.js/auto";
+
+    const canvas = document.getElementById(
+        "outcomesChart",
+    ) as HTMLCanvasElement;
+    if (canvas) {
+        const data = JSON.parse(canvas.dataset.chart || "{}");
+
+        new Chart(canvas, {
+            type: "doughnut",
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) =>
+                                ` ${context.label}: ${context.raw}`,
+                        },
+                    },
+                },
+                cutout: "70%",
+            },
+        });
+    }
+</script>
+
+<style>
+    .dashboard-stats {
+        margin-bottom: 3rem;
+    }
+
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+        .kpi-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    .kpi-card,
+    .chart-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .kpi-label {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: var(--text-tertiary);
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.05em;
+    }
+
+    .kpi-value {
+        font-size: 3rem;
+        font-weight: 800;
+        line-height: 1;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .kpi-value.gov {
+        color: var(--accent);
+    }
+
+    .kpi-sub {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    .progress-bar {
+        height: 6px;
+        background: var(--surface-raised);
+        border-radius: 99px;
+        margin-top: 1rem;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: var(--accent);
+        border-radius: 99px;
+    }
+
+    /* Chart specific */
+    .chart-card {
+        align-items: center;
+        padding: 1rem 1.5rem;
+    }
+
+    .chart-header {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        width: 100%;
+        text-align: left;
+    }
+
+    .chart-container {
+        position: relative;
+        height: 120px;
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .chart-legend {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+        font-size: 0.8rem;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        color: var(--text-secondary);
+    }
+
+    .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+    .dot.success {
+        background: #10b981;
+    }
+    .dot.failure {
+        background: #ef4444;
+    }
+    .dot.neutral {
+        background: #f59e0b;
+    }
+</style>

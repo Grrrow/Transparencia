@@ -1,0 +1,60 @@
+{
+    "generated_at": "2025-12-18T19:18:35.997Z",
+    "total_perfil": 9,
+    "profiles": [
+        {
+            "code": "Gobierno",
+            "name": "Gobierno de España",
+            "color": "#1F4E79",
+            "iniciativas": 29
+        },
+        {
+            "code": "GSUMAR",
+            "name": "Grupo Parlamentario Plurinacional SUMAR",
+            "color": "#8C1F7C",
+            "iniciativas": 5
+        },
+        {
+            "code": "GR",
+            "name": "Grupo Parlamentario Republicano",
+            "color": "#7B3F00",
+            "iniciativas": 5
+        },
+        {
+            "code": "GMx",
+            "name": "Grupo Parlamentario Mixto",
+            "color": "#9E9E9E",
+            "iniciativas": 4
+        },
+        {
+            "code": "GP",
+            "name": "Grupo Parlamentario Popular en el Congreso",
+            "color": "#0057B8",
+            "iniciativas": 9
+        },
+        {
+            "code": "GVOX",
+            "name": "Grupo Parlamentario VOX",
+            "color": "#2A5F2A",
+            "iniciativas": 7
+        },
+        {
+            "code": "GS",
+            "name": "Grupo Parlamentario Socialista",
+            "color": "#E31E24",
+            "iniciativas": 6
+        },
+        {
+            "code": "GJxCAT",
+            "name": "Grupo Parlamentario Junts per Catalunya",
+            "color": "#F1C40F",
+            "iniciativas": 1
+        },
+        {
+            "code": "GV (EAJ-PNV)",
+            "name": "Grupo Parlamentario Vasco (EAJ-PNV)",
+            "color": "#2E7D32",
+            "iniciativas": 3
+        }
+    ]
+}

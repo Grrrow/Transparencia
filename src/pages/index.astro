@@ -1,0 +1,177 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PoliticianCard from "../components/PoliticianCard.astro";
+import DashboardStats from "../components/DashboardStats.astro";
+import StatGrid from "../components/StatGrid.astro";
+import ConsensusDashboard from "../components/ConsensusDashboard.astro";
+import ParticipationDashboard from "../components/ParticipationDashboard.astro";
+import ActivityFeed from "../components/ActivityFeed.astro";
+import InitiativesPieChart from "../components/charts/InitiativesPieChart.astro";
+
+import politicians from "../data/politicians.json";
+import activities from "../data/activities.json";
+import initiatives from "../data/initiatives_detailed.json";
+
+const globalStats = [
+	{ value: initiatives.iniciativas.length, label: "Total Iniciativas" },
+	{
+		value: initiatives.iniciativas.filter(
+			(i) => i.tipo_iniciativa === "Proyecto_ley",
+		).length,
+		label: "Proyectos de Ley",
+	},
+	{
+		value: initiatives.iniciativas.filter((i) =>
+			i.tipo_iniciativa.includes("Proposicion_ley"),
+		).length,
+		label: "Proposiciones",
+	},
+	{
+		value: initiatives.iniciativas.filter(
+			(i) => i.tipo_iniciativa === "Decreto_ley",
+		).length,
+		label: "Reales Decretos",
+	},
+];
+---
+
+<Layout>
+	<section class="hero">
+		<div class="hero-content">
+			<h1>Comprende quién te representa</h1>
+			<p>
+				Un portal de transparencia ciudadana para seguir de cerca la
+				actividad parlamentaria, propuestas y votaciones de nuestros
+				políticos.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="section-header">
+			<h2>Informe de Iniciativas 2025</h2>
+			<a href="/iniciativas">Ver listado detallado &rarr;</a>
+		</div>
+
+		<DashboardStats />
+		<div style="margin-top: 2rem;">
+			<StatGrid stats={globalStats} />
+		</div>
+	</section>
+
+	<ConsensusDashboard />
+	<ParticipationDashboard />
+
+	{
+		/* 
+	<div class="grid-layout">
+		<section class="section main-col">
+			<div class="section-header">
+				<h2>Políticos Destacados</h2>
+				<a href="/politicos">Ver directorio &rarr;</a>
+			</div>
+			<div class="politician-grid">
+				{politicians.map((p) => <PoliticianCard politician={p} />)}
+			</div>
+		</section>
+	</div>
+	*/
+	}
+
+	<section class="section">
+		<div class="section-header">
+			<h2 class="section-title">Iniciativas por Partido</h2>
+			<a href="/iniciativas" class="see-all-link">Ver todas &rarr;</a>
+		</div>
+		<div class="chart-wrapper">
+			<InitiativesPieChart />
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.hero {
+		padding: 4rem 0;
+		text-align: center;
+		background: linear-gradient(
+			135deg,
+			var(--color-surface) 0%,
+			var(--color-bg) 100%
+		);
+		border-radius: var(--radius-lg);
+		margin-bottom: 3rem;
+		border: 1px solid var(--color-border);
+	}
+
+	.hero h1 {
+		font-size: 3rem;
+		margin-bottom: 1rem;
+		background: linear-gradient(
+			90deg,
+			var(--color-primary-dark),
+			var(--color-primary)
+		);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
+	.hero p {
+		font-size: 1.25rem;
+		color: var(--color-text-muted);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.section {
+		margin-bottom: 4rem;
+	}
+
+	.section-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		margin-bottom: 1.5rem;
+	}
+
+	.grid-layout {
+		display: grid;
+		grid-template-columns: 2fr 1fr;
+		gap: 3rem;
+	}
+
+	.politician-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.feed-container {
+		background: var(--color-surface);
+		padding: 1.5rem;
+		border-radius: var(--radius-md);
+		border: 1px solid var(--color-border);
+	}
+
+	.see-all-link {
+		color: var(--color-primary);
+		text-decoration: none;
+		font-weight: 500;
+		transition: color 0.2s;
+	}
+
+	.see-all-link:hover {
+		color: var(--color-primary-dark);
+	}
+
+	@media (max-width: 900px) {
+		.grid-layout {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.hero h1 {
+			font-size: 2rem;
+		}
+	}
+</style>

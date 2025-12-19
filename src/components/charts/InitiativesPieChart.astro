@@ -1,0 +1,75 @@
+---
+import partyStats from "../../data/party_stats.json";
+
+const chartData = {
+    labels: partyStats.profiles.map((p) => p.name),
+    values: partyStats.profiles.map((p) => p.iniciativas),
+    colors: partyStats.profiles.map((p) => p.color),
+};
+---
+
+<div class="chart-container" data-chart={JSON.stringify(chartData)}>
+    <canvas id="initiativesChart"></canvas>
+</div>
+
+<script>
+    import Chart from "chart.js/auto";
+
+    const container = document.querySelector(".chart-container") as HTMLElement;
+    const ctx = document.getElementById(
+        "initiativesChart",
+    ) as HTMLCanvasElement;
+
+    if (container && ctx) {
+        const chartData = JSON.parse(container.dataset.chart || "{}");
+
+        new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                labels: chartData.labels,
+                datasets: [
+                    {
+                        label: "Iniciativas Presentadas",
+                        data: chartData.values,
+                        backgroundColor: chartData.colors,
+                        borderWidth: 0,
+                        hoverOffset: 4,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: "bottom",
+                        labels: {
+                            boxWidth: 12,
+                            font: {
+                                family: "'Inter', sans-serif",
+                                size: 11,
+                            },
+                            padding: 15,
+                        },
+                    },
+                    tooltip: {
+                        backgroundColor: "#1F2937",
+                        padding: 12,
+                        titleFont: { family: "'Inter', sans-serif" },
+                        bodyFont: { family: "'Inter', sans-serif" },
+                    },
+                },
+            },
+        });
+    }
+</script>
+
+<style>
+    .chart-container {
+        position: relative;
+        height: 400px;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+</style>

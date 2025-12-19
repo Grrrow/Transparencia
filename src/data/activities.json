@@ -1,0 +1,26 @@
+[
+    {
+        "id": "act-101",
+        "politicianId": "1",
+        "type": "PROPOSAL",
+        "date": "2024-03-15",
+        "title": "Ley de Transparencia Digital",
+        "description": "Propuesta para obligar a publicar el código fuente de las webs públicas."
+    },
+    {
+        "id": "act-102",
+        "politicianId": "2",
+        "type": "VOTE_AGAINST",
+        "date": "2024-03-14",
+        "title": "Subida de Tasas Portuarias",
+        "description": "Voto en contra del Real Decreto ley 4/2024."
+    },
+    {
+        "id": "act-103",
+        "politicianId": "3",
+        "type": "PROJECT",
+        "date": "2024-03-10",
+        "title": "Protección del Lince Ibérico",
+        "description": "Proyecto de ley para ampliar las zonas de protección especial."
+    }
+]

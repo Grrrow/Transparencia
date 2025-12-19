@@ -1,0 +1,141 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import StatGrid from "../../components/StatGrid.astro";
+import ActivityFeed from "../../components/ActivityFeed.astro";
+import politicians from "../../data/politicians.json";
+import activities from "../../data/activities.json";
+
+export async function getStaticPaths() {
+    return politicians.map((politician) => ({
+        params: { id: politician.id },
+        props: { politician },
+    }));
+}
+
+const { politician } = Astro.props;
+const politicianActivities = activities.filter(
+    (a) => a.politicianId === politician.id,
+);
+
+const detailedStats = [
+    { value: politician.stats.proposals, label: "Propuestas de Ley" },
+    { value: politician.stats.projects, label: "Proyectos de Ley" },
+    { value: politician.stats.decrees, label: "Reales Decretos" },
+    { value: "98%", label: "Asistencia" },
+];
+---
+
+<Layout>
+    <div class="profile-header">
+        <div class="avatar-wrapper">
+            <img src={politician.avatar} alt={politician.name} />
+        </div>
+        <div class="profile-info">
+            <span class="badget">{politician.party}</span>
+            <h1>{politician.name}</h1>
+            <p class="role">{politician.role}</p>
+            <p class="bio">{politician.bio}</p>
+        </div>
+    </div>
+
+    <section class="section">
+        <h2>Estadísticas de Legislatura</h2>
+        <StatGrid stats={detailedStats} />
+    </section>
+
+    <section class="section">
+        <h2>Historial de Actividad</h2>
+        {
+            politicianActivities.length > 0 ? (
+                <div class="feed-wrapper">
+                    <ActivityFeed activities={politicianActivities} />
+                </div>
+            ) : (
+                <p class="empty-state">
+                    No hay actividad reciente registrada para este diputado.
+                </p>
+            )
+        }
+    </section>
+</Layout>
+
+<style>
+    .profile-header {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        padding: 3rem;
+        display: flex;
+        gap: 3rem;
+        align-items: center;
+        margin-bottom: 3rem;
+    }
+
+    .avatar-wrapper img {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid var(--color-bg);
+        box-shadow: var(--shadow-md);
+    }
+
+    .badget {
+        display: inline-block;
+        background: var(--color-primary);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .role {
+        font-size: 1.25rem;
+        color: var(--color-text-muted);
+        margin-bottom: 1.5rem;
+    }
+
+    .bio {
+        max-width: 600px;
+        font-size: 1rem;
+    }
+
+    .section {
+        margin-bottom: 4rem;
+    }
+
+    .section h2 {
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid var(--color-border);
+        padding-bottom: 0.5rem;
+        display: inline-block;
+    }
+
+    .feed-wrapper {
+        background: var(--color-surface);
+        padding: 2rem;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-border);
+    }
+
+    .empty-state {
+        color: var(--color-text-muted);
+        font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+        .profile-header {
+            flex-direction: column;
+            text-align: center;
+            padding: 2rem;
+            gap: 1.5rem;
+        }
+    }
+</style>

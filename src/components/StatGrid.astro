@@ -1,0 +1,49 @@
+---
+const { stats } = Astro.props;
+---
+
+<div class="stat-grid">
+    {
+        stats.map((stat) => (
+            <div class="stat-card">
+                <span class="value">{stat.value}</span>
+                <span class="label">{stat.label}</span>
+            </div>
+        ))
+    }
+</div>
+
+<style>
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .stat-card {
+        background: var(--color-surface);
+        padding: 1.5rem;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--color-border);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--color-primary);
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+
+    .label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--color-text-muted);
+    }
+</style>

@@ -1,0 +1,134 @@
+---
+const { politician } = Astro.props;
+---
+
+<a href={`/politicos/${politician.id}`} class="card">
+    <div class="card-header">
+        <div class="avatar-container">
+            <img src={politician.avatar} alt={politician.name} class="avatar" />
+        </div>
+        <div class="info">
+            <span class="party">{politician.party}</span>
+            <h3 class="name">{politician.name}</h3>
+            <span class="role">{politician.role}</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <p class="bio">{politician.bio}</p>
+    </div>
+    <div class="card-footer">
+        <div class="stat">
+            <span class="stat-value">{politician.stats.proposals}</span>
+            <span class="stat-label">Propuestas</span>
+        </div>
+        <div class="stat">
+            <span class="stat-value">{politician.stats.projects}</span>
+            <span class="stat-label">Proyectos</span>
+        </div>
+    </div>
+</a>
+
+<style>
+    .card {
+        background: var(--color-surface);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--color-border);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        transition:
+            transform 0.2s,
+            box-shadow 0.2s;
+        height: 100%;
+    }
+
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+        color: inherit;
+    }
+
+    .card-header {
+        padding: 1.5rem;
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .avatar-container {
+        flex-shrink: 0;
+    }
+
+    .avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--color-bg);
+    }
+
+    .info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .party {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--color-primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .name {
+        margin: 0;
+        font-size: 1.125rem;
+        color: var(--color-text);
+    }
+
+    .role {
+        font-size: 0.875rem;
+        color: var(--color-text-muted);
+    }
+
+    .card-body {
+        padding: 0 1.5rem 1.5rem;
+        flex-grow: 1;
+    }
+
+    .bio {
+        font-size: 0.875rem;
+        color: var(--color-text-muted);
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin: 0;
+    }
+
+    .card-footer {
+        background: var(--color-bg);
+        padding: 1rem 1.5rem;
+        display: flex;
+        gap: 2rem;
+        border-top: 1px solid var(--color-border);
+    }
+
+    .stat {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stat-value {
+        font-weight: 700;
+        font-size: 1.125rem;
+        color: var(--color-text);
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+        color: var(--color-text-muted);
+    }
+</style>

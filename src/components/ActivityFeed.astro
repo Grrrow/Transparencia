@@ -1,0 +1,111 @@
+---
+const { activities } = Astro.props;
+
+function getIcon(type) {
+    switch (type) {
+        case "PROPOSAL":
+            return "📄";
+        case "VOTE_FOR":
+            return "✅";
+        case "VOTE_AGAINST":
+            return "❌";
+        case "PROJECT":
+            return "🏗️";
+        default:
+            return "📢";
+    }
+}
+
+function getLabel(type) {
+    switch (type) {
+        case "PROPOSAL":
+            return "Propuesta";
+        case "VOTE_FOR":
+            return "Voto a favor";
+        case "VOTE_AGAINST":
+            return "Voto en contra";
+        case "PROJECT":
+            return "Proyecto de Ley";
+        default:
+            return "Actividad";
+    }
+}
+---
+
+<div class="feed">
+    {
+        activities.map((activity) => (
+            <div class="feed-item">
+                <div class="icon">{getIcon(activity.type)}</div>
+                <div class="content">
+                    <div class="meta">
+                        <span class="date">{activity.date}</span>
+                        <span class="type">{getLabel(activity.type)}</span>
+                    </div>
+                    <h4 class="title">{activity.title}</h4>
+                    <p class="desc">{activity.description}</p>
+                </div>
+            </div>
+        ))
+    }
+</div>
+
+<style>
+    .feed {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .feed-item {
+        display: flex;
+        gap: 1rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .feed-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .icon {
+        font-size: 1.5rem;
+        background: var(--color-bg);
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .content {
+        flex-grow: 1;
+    }
+
+    .meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.75rem;
+        color: var(--color-text-muted);
+        margin-bottom: 0.25rem;
+    }
+
+    .type {
+        font-weight: 600;
+        color: var(--color-primary);
+    }
+
+    .title {
+        margin: 0 0 0.5rem 0;
+        font-size: 1rem;
+    }
+
+    .desc {
+        font-size: 0.875rem;
+        color: var(--color-text-muted);
+        margin: 0;
+    }
+</style>
