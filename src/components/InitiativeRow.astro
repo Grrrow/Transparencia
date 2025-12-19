@@ -9,6 +9,12 @@ interface Props {
         tipo_iniciativa: string;
         resultado_tram?: string;
         enlace: string;
+        boeLink?: {
+            text: string;
+            url: string;
+        } | null;
+        summary?: string;
+        longText?: string;
         voting?: {
             exists: boolean;
             yes: number | null;
@@ -26,6 +32,55 @@ interface Props {
 }
 
 const { initiative } = Astro.props;
+
+// Simple Markdown Formatter for specific user data
+const formatText = (text: string) => {
+    if (!text) return "";
+
+    // 1. Headers (##)
+    let html = text.replace(/^## (.*$)/gm, '<h4 class="md-heading">$1</h4>');
+
+    // 2. Bold (**text**)
+    html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+    // 3. Lists (* item)
+    // First, identify lines starting with *
+    // We'll wrap consecutive list items in <ul> later or just convert to <li> and let browser handle (not valid HTML but often works)
+    // better: replace whole blocks of list items.
+    // Simple approach: replace * with bullet character unless we want real <li>
+    // Let's try real <ul> logic if possible, or just styled divs.
+    // For simplicity: replace `* ` with `• ` and add a line break, or wrap in formatting.
+    // User requested "desplegable leer mas" so we have space.
+
+    // Regex for lists: (* text) -> <li>text</li>
+    // Note: this is a simple parser, might be fragile.
+    html = html.replace(/^\* (.*$)/gm, "<li>$1</li>");
+
+    // Wrap consecutive <li> in <ul> (simple heuristic)
+    // Or simply rely on lists usually being distinct.
+    // Let's wrap the whole thing if it contains <li>? No.
+    // Manual <ul> insertion:
+    if (html.includes("<li>")) {
+        // Quick fix: replace multiple <li>...</li> with <ul>...</ul> requires accurate grouping.
+        // Let's just output <li> and style them with list-style inside the container?
+        // No, <li> must be in <ul>.
+        // Let's match (<li>.*</li>\n?)+ globally?
+        // A bit complex for simple regex.
+        // Alternative: Replace `* ` with `<div class="list-item">• ` ... `</div>`
+        html = html.replace(
+            /<li>(.*?)<\/li>/g,
+            '<div class="md-list-item"><span class="bullet">•</span> <span class="content">$1</span></div>',
+        );
+    }
+
+    // 4. Paragraphs (double newlines)
+    // Split by \n\n and wrap non-header/non-list lines?
+    // Simply replacing \n\n with <br><br> is safer for mixed content.
+    html = html.replace(/\n\n/g, "<br/><br/>");
+    html = html.replace(/\n/g, "<br/>"); // Single newlines too?
+
+    return html;
+};
 
 const formatDate = (dateStr: string) => {
     return new Date(dateStr.split("/").reverse().join("-")).toLocaleDateString(
@@ -108,6 +163,27 @@ const getFormationName = (code: string) => {
             </a>
         </h3>
 
+        {
+            initiative.summary && (
+                <div
+                    class="initiative-summary"
+                    set:html={formatText(initiative.summary)}
+                />
+            )
+        }
+
+        {
+            initiative.longText && (
+                <details class="more-details">
+                    <summary>Leer más</summary>
+                    <div
+                        class="content"
+                        set:html={formatText(initiative.longText)}
+                    />
+                </details>
+            )
+        }
+
         <div class="meta-footer">
             <div class="author-block">
                 <span class="label">Autor:</span>
@@ -127,9 +203,23 @@ const getFormationName = (code: string) => {
                     </div>
                 )
             }
-            <a href={initiative.enlace} class="link-doc" target="_blank"
-                >Documento Oficial &rarr;</a
-            >
+            <div class="links-group">
+                {
+                    initiative.boeLink && (
+                        <a
+                            href={initiative.boeLink.url}
+                            class="link-doc boe"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            BOE {initiative.boeLink.text}
+                        </a>
+                    )
+                }
+                <a href={initiative.enlace} class="link-doc" target="_blank"
+                    >Página Oficial &rarr;</a
+                >
+            </div>
         </div>
     </div>
 
@@ -337,7 +427,6 @@ const getFormationName = (code: string) => {
     }
 
     .link-doc {
-        margin-left: auto;
         font-size: 0.85rem;
         font-weight: 700;
         color: var(--accent);
@@ -347,6 +436,21 @@ const getFormationName = (code: string) => {
     }
     .link-doc:hover {
         text-decoration: underline;
+    }
+
+    .links-group {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .link-doc.boe {
+        color: var(--text-tertiary); /* Secondary color for BOE */
+        font-size: 0.8rem;
+    }
+    .link-doc.boe:hover {
+        color: var(--text-primary);
     }
 
     /* Voting Section */
@@ -423,5 +527,64 @@ const getFormationName = (code: string) => {
         color: var(--pc);
         border: 1px solid color-mix(in srgb, var(--pc), transparent 70%);
         min-width: 2.5rem;
+    }
+
+    /* Summary and Details */
+    .initiative-summary {
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    .more-details {
+        margin-bottom: 1.5rem;
+    }
+
+    .more-details summary {
+        cursor: pointer;
+        color: var(--accent);
+        font-weight: 600;
+        font-size: 0.9rem;
+        user-select: none;
+        margin-bottom: 0.5rem;
+        list-style: none;
+    }
+    .more-details summary::-webkit-details-marker {
+        display: none;
+    }
+    .more-details summary::after {
+        content: " 👇";
+        font-size: 0.8em;
+    }
+    .more-details[open] summary::after {
+        content: " 👆";
+    }
+
+    .more-details .content {
+        margin-top: 0.5rem;
+        padding: 1rem;
+        background: var(--surface-sunken);
+        border-radius: 8px;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: var(--text-secondary);
+    }
+
+    :global(.md-heading) {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-top: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+    :global(.md-list-item) {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.4rem;
+    }
+    :global(.md-list-item .bullet) {
+        color: var(--accent);
+        font-weight: bold;
     }
 </style>
