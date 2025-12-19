@@ -1,0 +1,418 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import diputadosData from "../../data/diputados.json";
+
+interface Deputy {
+    apellidos: string;
+    formacion: string;
+    apellidosNombre: string;
+    fchAlta: string;
+    genero: string;
+    grupo: string;
+    idLegislatura: number;
+    legislatura: string;
+    nombre: string;
+    nombreCircunscripcion: string;
+    twitter: string;
+    twitterUserId: string;
+    twitterUserName: string;
+}
+
+// Group deputies by 'grupo'
+const groupedDiputados = diputadosData.data.reduce(
+    (acc: Record<string, Deputy[]>, curr: any) => {
+        const group = curr.grupo || "Otros";
+        if (!acc[group]) {
+            acc[group] = [];
+        }
+        acc[group].push(curr as Deputy);
+        return acc;
+    },
+    {} as Record<string, Deputy[]>,
+);
+
+// Get sorted group names for consistent display
+// Get sorted group names by deputy count (descending)
+const groupNames = Object.keys(groupedDiputados).sort((a, b) => {
+    return groupedDiputados[b].length - groupedDiputados[a].length;
+});
+
+// Helper to get display title
+function getGroupTitle(groupName: string, deputies: Deputy[]) {
+    // If it's the Mixed Group, keep the original name
+    if (groupName.toLowerCase().includes("mixto")) {
+        return groupName;
+    }
+
+    // Otherwise, find the most frequent formation
+    const counts = deputies.reduce(
+        (acc, curr) => {
+            const f = curr.formacion || "Desconocido";
+            acc[f] = (acc[f] || 0) + 1;
+            return acc;
+        },
+        {} as Record<string, number>,
+    );
+
+    // Return the formation with the highest count
+    return Object.keys(counts).reduce((a, b) =>
+        counts[a] > counts[b] ? a : b,
+    );
+}
+
+// Helper for Formation Tag Color
+function getTagColor(formacion: string) {
+    const f = formacion?.toUpperCase() || "";
+    if (f.includes("PP")) return "blue";
+    if (f.includes("PSOE") || f.includes("PSC")) return "red";
+    if (f.includes("VOX")) return "green";
+    if (f.includes("SUMAR")) return "magenta";
+    if (f.includes("ERC")) return "gold";
+    if (f.includes("JUNTS")) return "cyan";
+    if (f.includes("BILDU")) return "lime";
+    if (f.includes("PNV")) return "geekblue";
+    return "default";
+}
+---
+
+<Layout title="Diputados - Congreso de los Diputados">
+    <div class="container">
+        <header class="page-header">
+            <h1>Diputados del Congreso</h1>
+            <p>
+                Listado completo de los {diputadosData.data.length} representantes,
+                organizados por Grupo Parlamentario.
+            </p>
+        </header>
+
+        <div class="groups-container">
+            {
+                groupNames.map((groupName) => {
+                    const title = getGroupTitle(
+                        groupName,
+                        groupedDiputados[groupName],
+                    );
+                    const colorClass = getTagColor(title);
+
+                    return (
+                        <details class={`group-section ${colorClass}`} open>
+                            <summary class="group-title">
+                                <span class="title-text">{title}</span>
+                                <span class="count-badge">
+                                    {groupedDiputados[groupName].length}{" "}
+                                    diputados
+                                </span>
+                                <span class="icon">▼</span>
+                            </summary>
+
+                            <div class="deputies-grid">
+                                {groupedDiputados[groupName].map((diputado) => (
+                                    <div class="deputy-card">
+                                        <div class="card-header">
+                                            <div class="avatar-placeholder">
+                                                {diputado.nombre.charAt(0)}
+                                                {diputado.apellidos.charAt(0)}
+                                            </div>
+                                            <div class="info">
+                                                <h3>
+                                                    {diputado.apellidosNombre}
+                                                </h3>
+                                                <span
+                                                    class={`tag ${getTagColor(diputado.formacion)}`}
+                                                >
+                                                    {diputado.formacion}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="meta-row">
+                                                <span class="label">
+                                                    Circunscripción:
+                                                </span>
+                                                <span class="value">
+                                                    {
+                                                        diputado.nombreCircunscripcion
+                                                    }
+                                                </span>
+                                            </div>
+                                            <div class="meta-row">
+                                                <span class="label">Alta:</span>
+                                                <span class="value">
+                                                    {diputado.fchAlta}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </details>
+                    );
+                })
+            }
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    .page-header {
+        margin-bottom: 3rem;
+        text-align: center;
+    }
+    .page-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary, #1f1f1f);
+    }
+    .page-header p {
+        color: var(--text-secondary, #8c8c8c);
+        font-size: 1.1rem;
+    }
+
+    .group-section {
+        margin-bottom: 2rem;
+        border: 1px solid var(--border-subtle, #f0f0f0);
+        border-radius: 8px;
+        background: var(--surface, #ffffff);
+        overflow: hidden;
+    }
+
+    .group-section[open] {
+        padding-bottom: 1.5rem;
+    }
+
+    /* Accordion Header */
+    summary.group-title {
+        font-size: 1.25rem;
+        padding: 1.5rem 2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        list-style: none; /* Hide default arrow */
+        background: var(--bg-tertiary, #fafafa);
+        border-bottom: 1px solid transparent;
+        border-left: 4px solid transparent;
+        transition: background 0.2s;
+        font-weight: 600;
+        color: var(--text-primary, #1f1f1f);
+    }
+
+    /* Group Header Colors */
+    .group-section.blue summary.group-title {
+        border-left-color: #1890ff;
+        background: #e6f7ff;
+        color: #0050b3;
+    }
+    .group-section.red summary.group-title {
+        border-left-color: #f5222d;
+        background: #fff1f0;
+        color: #cf1322;
+    }
+    .group-section.green summary.group-title {
+        border-left-color: #52c41a;
+        background: #f6ffed;
+        color: #389e0d;
+    }
+    .group-section.magenta summary.group-title {
+        border-left-color: #eb2f96;
+        background: #fff0f6;
+        color: #c41d7f;
+    }
+    .group-section.gold summary.group-title {
+        border-left-color: #faad14;
+        background: #fffbe6;
+        color: #d48806;
+    }
+    .group-section.cyan summary.group-title {
+        border-left-color: #13c2c2;
+        background: #e6fffb;
+        color: #08979c;
+    }
+    .group-section.lime summary.group-title {
+        border-left-color: #a0d911;
+        background: #fcffe6;
+        color: #7cb305;
+    }
+    .group-section.geekblue summary.group-title {
+        border-left-color: #2f54eb;
+        background: #f0f5ff;
+        color: #1d39c4;
+    }
+
+    /* Hover effects for colored headers */
+    .group-section.blue summary.group-title:hover {
+        background: #bae7ff;
+    }
+    .group-section.red summary.group-title:hover {
+        background: #ffccc7;
+    }
+    .group-section.green summary.group-title:hover {
+        background: #d9f7be;
+    }
+
+    .group-section[open] summary.group-title {
+        border-bottom-color: var(--border-subtle, #f0f0f0);
+    }
+    summary.group-title:hover {
+        background: var(--border-subtle, #f0f0f0);
+    }
+    summary.group-title::-webkit-details-marker {
+        display: none; /* Safari/Chrome */
+    }
+
+    .title-text {
+        flex-grow: 1;
+    }
+
+    .count-badge {
+        font-size: 0.85rem;
+        background: var(--border-subtle, #e0e0e0);
+        color: var(--text-secondary, #595959);
+        padding: 0.25rem 0.75rem;
+        border-radius: 99px;
+        margin-right: 1rem;
+        font-weight: 500;
+    }
+
+    .icon {
+        font-size: 0.8rem;
+        transition: transform 0.3s;
+        color: var(--text-tertiary);
+    }
+    .group-section[open] .icon {
+        transform: rotate(180deg);
+    }
+
+    .deputies-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        padding: 1.5rem 2rem 0;
+    }
+
+    .deputy-card {
+        background: var(--surface, #ffffff);
+        border: 1px solid var(--border-subtle, #f0f0f0);
+        border-radius: 8px;
+        padding: 1.25rem;
+        transition:
+            transform 0.2s,
+            box-shadow 0.2s;
+    }
+    .deputy-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-header {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        align-items: flex-start;
+    }
+
+    .avatar-placeholder {
+        width: 48px;
+        height: 48px;
+        background: var(--bg-tertiary, #f5f5f5);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: var(--text-secondary, #595959);
+        flex-shrink: 0;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .info h3 {
+        font-size: 1rem;
+        margin: 0 0 0.25rem 0;
+        line-height: 1.3;
+        color: var(--text-primary, #1f1f1f);
+    }
+
+    /* Tags */
+    .tag {
+        display: inline-block;
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        border: 1px solid transparent;
+    }
+    .tag.blue {
+        background: #e6f7ff;
+        color: #1890ff;
+        border-color: #91d5ff;
+    }
+    .tag.red {
+        background: #fff1f0;
+        color: #f5222d;
+        border-color: #ffa39e;
+    }
+    .tag.green {
+        background: #f6ffed;
+        color: #52c41a;
+        border-color: #b7eb8f;
+    }
+    .tag.magenta {
+        background: #fff0f6;
+        color: #eb2f96;
+        border-color: #ffadd2;
+    }
+    .tag.gold {
+        background: #fffbe6;
+        color: #faad14;
+        border-color: #ffe58f;
+    }
+    .tag.cyan {
+        background: #e6fffb;
+        color: #13c2c2;
+        border-color: #87e8de;
+    }
+    .tag.lime {
+        background: #fcffe6;
+        color: #a0d911;
+        border-color: #eaff8f;
+    }
+    .tag.geekblue {
+        background: #f0f5ff;
+        color: #2f54eb;
+        border-color: #adc6ff;
+    }
+    .tag.default {
+        background: #f5f5f5;
+        color: #595959;
+        border-color: #d9d9d9;
+    }
+
+    .card-body {
+        border-top: 1px solid var(--border-subtle, #f0f0f0);
+        padding-top: 0.75rem;
+        font-size: 0.85rem;
+    }
+
+    .meta-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.25rem;
+    }
+    .meta-row:last-child {
+        margin-bottom: 0;
+    }
+    .meta-row .label {
+        color: var(--text-tertiary, #8c8c8c);
+    }
+    .meta-row .value {
+        color: var(--text-secondary, #595959);
+        font-weight: 500;
+    }
+</style>

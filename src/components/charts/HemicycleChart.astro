@@ -1,0 +1,240 @@
+---
+import diputadosData from "../../data/diputados.json";
+
+// Define party configs for consistent ordering and color
+const PARTY_CONFIG = {
+    SUMAR: { color: "#eb2f96", order: 1 },
+    PSOE: { color: "#f5222d", order: 2 }, // Socialist
+    ERC: { color: "#faad14", order: 3 }, // Left independence
+    "EH Bildu": { color: "#a0d911", order: 4 }, // Left independence
+    "EAJ-PNV": { color: "#2f54eb", order: 5 }, // Moderate nationalist
+    Junts: { color: "#13c2c2", order: 6 }, // Right independence
+    "G.P. Plurinacional Sumar": { color: "#eb2f96", order: 1 }, // Map to SUMAR
+    Socialista: { color: "#f5222d", order: 2 },
+    Republicano: { color: "#faad14", order: 3 },
+    MIXTO: { color: "#bfbfbf", order: 5.5 }, // Center/Mixed
+    VOX: { color: "#52c41a", order: 8 }, // Far right
+    Popular: { color: "#1890ff", order: 7 }, // Right
+    PP: { color: "#1890ff", order: 7 },
+};
+
+// Default styling
+const DEFAULT_COLOR = "#8c8c8c";
+const DEFAULT_ORDER = 99;
+
+// Normalize Group Names to Keys
+function normalizeGroup(name: string) {
+    if (!name) return "Desconocido";
+    const n = name.toUpperCase();
+    if (n.includes("POPULAR") || n.includes("PP")) return "Popular";
+    if (n.includes("SOCIALISTA") || n.includes("PSOE")) return "Socialista";
+    if (n.includes("VOX")) return "VOX";
+    if (n.includes("SUMAR") || n.includes("PLURINACIONAL")) return "Sumar";
+    if (n.includes("REPUBLICANO") || n.includes("ERC")) return "Republicano";
+    if (n.includes("JUNTS")) return "Junts";
+    if (n.includes("BILDU")) return "EH Bildu";
+    if (n.includes("PNV") || n.includes("VASCO")) return "EAJ-PNV";
+    if (n.includes("MIXTO")) return "Mixto";
+    return name;
+}
+
+// 1. Group Data
+const seatsByGroup = diputadosData.data.reduce(
+    (acc: Record<string, number>, curr: any) => {
+        const rawGroup = curr.grupo || "Desconocido";
+        const normalized = normalizeGroup(rawGroup);
+        acc[normalized] = (acc[normalized] || 0) + 1;
+        return acc;
+    },
+    {} as Record<string, number>,
+);
+
+// 2. Prepare Chart Data (Sorted)
+const chartDataItems = Object.entries(seatsByGroup)
+    .map(([label, value]) => {
+        // Attempt to match config based on label content
+        let config = { color: DEFAULT_COLOR, order: DEFAULT_ORDER };
+
+        // Find matching key in config
+        const configKey = Object.keys(PARTY_CONFIG).find((k) =>
+            label.toUpperCase().includes(k.toUpperCase()),
+        );
+
+        if (configKey) {
+            config = (PARTY_CONFIG as any)[configKey];
+        }
+
+        return {
+            label,
+            value,
+            color: config.color,
+            order: config.order,
+        };
+    })
+    .sort((a, b) => a.order - b.order);
+
+const chartPayload = {
+    labels: chartDataItems.map((d) => d.label),
+    datasets: [
+        {
+            data: chartDataItems.map((d) => d.value),
+            backgroundColor: chartDataItems.map((d) => d.color),
+            borderWidth: 1,
+            borderColor: "#ffffff",
+        },
+    ],
+};
+---
+
+<div class="hemicycle-wrapper">
+    <div class="chart-container" data-hemicycle={JSON.stringify(chartPayload)}>
+        <canvas id="hemicycleCanvas"></canvas>
+
+        <!-- Legend / Central Info -->
+        <div class="absolute-majority-marker">
+            <span class="marker-label">Mayoría Absoluta (176)</span>
+            <div class="marker-line"></div>
+        </div>
+
+        <a href="/diputados" class="center-label">
+            <span class="total">350</span>
+            <span class="sub">Diputados</span>
+        </a>
+    </div>
+</div>
+
+<script>
+    import Chart from "chart.js/auto";
+
+    const containers = document.querySelectorAll(
+        ".chart-container[data-hemicycle]",
+    );
+
+    containers.forEach((container) => {
+        const dataStr = container.getAttribute("data-hemicycle");
+        if (!dataStr) return;
+
+        const data = JSON.parse(dataStr);
+        const canvas = container.querySelector("canvas");
+        if (!canvas) return;
+
+        // Custom plugin to draw lines if needed, but CSS is easier for the static majority line
+
+        new Chart(canvas, {
+            type: "doughnut",
+            data: data,
+            options: {
+                layout: {
+                    padding: {
+                        top: 30,
+                    },
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                rotation: -90,
+                circumference: 180,
+                cutout: "60%",
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: "bottom",
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20,
+                            font: { size: 11 },
+                        },
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return ` ${context.label}: ${context.raw} escaños`;
+                            },
+                        },
+                    },
+                },
+            },
+        });
+    });
+</script>
+
+<style>
+    .hemicycle-wrapper {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .chart-container {
+        position: relative;
+        height: 300px; /* Force height for aspect ratio */
+        width: 100%;
+    }
+
+    .absolute-majority-marker {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        pointer-events: none;
+        z-index: 10;
+    }
+
+    .marker-label {
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        margin-bottom: 2px;
+        white-space: nowrap;
+        opacity: 0.6;
+    }
+
+    .marker-line {
+        width: 1px;
+        height: 50px;
+        background: repeating-linear-gradient(
+            to bottom,
+            #666,
+            #666 2px,
+            transparent 2px,
+            transparent 4px
+        );
+    }
+
+    .center-label {
+        position: absolute;
+        bottom: 25%;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        text-decoration: none;
+        transition: transform 0.2s;
+    }
+    .center-label:hover {
+        transform: translateX(-50%) scale(1.05); /* Subtle zoom on hover */
+    }
+
+    .center-label .total {
+        display: block;
+        font-size: 3rem;
+        font-weight: 800;
+        line-height: 1;
+        color: var(--text-primary, #333);
+    }
+
+    .center-label .sub {
+        font-size: 1rem;
+        color: var(--text-secondary, #666);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Manual placement adjustment for the line might be tricky responsively, 
+       but centering it basically works for the "176" mark because 176/350 is very close to 50% (175).
+       It's actually 50.28%, so virtually center. */
+</style>

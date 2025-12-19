@@ -1,6 +1,24 @@
 export interface Initiative {
     resultado_tram?: string;
     autor: string;
+    titulo: string;
+    enlace: string;
+    fecha_presentado: string;
+    voting?: {
+        exists: boolean;
+        yes: number;
+        no: number;
+        abstentions: number;
+        presentes?: number;
+        missingDeputies?: any[];
+        result?: {
+            desglose?: {
+                yes?: Record<string, number>;
+                no?: Record<string, number>;
+                abstention?: Record<string, number>;
+            };
+        };
+    };
     [key: string]: any;
 }
 

@@ -1,6 +1,7 @@
 ---
 import { calculateParticipationStats } from "../utils/participationStats";
 import initiativesData from "../data/initiatives_detailed.json";
+import partyStats from "../data/party_stats.json";
 import AbsenteeismRanking from "./AbsenteeismRanking.astro";
 
 const {
@@ -14,6 +15,24 @@ const {
     totalAbstentions,
     totalNoVotes,
 } = calculateParticipationStats(initiativesData.iniciativas);
+
+const getPartyConfig = (codeOrName: string) => {
+    // Normalize for lookup (sometimes it's "GMx", "GVOX" etc)
+    const party = partyStats.profiles.find(
+        (p) => p.code === codeOrName || p.name === codeOrName,
+    );
+    // Fallback colors if not found in profiles
+    if (!party) {
+        if (codeOrName === "GVOX") return { color: "#63be21" };
+        if (codeOrName === "GP") return { color: "#0056a3" };
+        if (codeOrName === "GS") return { color: "#E01021" };
+        if (codeOrName === "GSUMAR") return { color: "#E51C55" };
+        if (codeOrName === "GMx" || codeOrName === "GMX")
+            return { color: "#888888" };
+        return { color: "#666" };
+    }
+    return party;
+};
 
 const formatter = new Intl.NumberFormat("es-ES");
 
@@ -33,6 +52,25 @@ const pctVotesCastYesNo =
               100
           ).toFixed(1)
         : "0";
+
+// Helper to map Group Codes to Formation Names
+const getFormationName = (code: string) => {
+    const c = code?.toUpperCase() || "";
+    // Keep GMx as is (User Request)
+    if (c === "GMX") return "GMx";
+
+    // Map others
+    if (c === "GS") return "PSOE";
+    if (c === "GP") return "PP";
+    if (c === "GVOX") return "VOX";
+    if (c === "GSUMAR") return "SUMAR";
+    if (c === "GR") return "ERC";
+    if (c === "GJXCAT") return "Junts";
+    if (c === "GEH BILLDU" || c === "GEH BILDU") return "Bildu";
+    if (c === "GV (EAJ-PNV)") return "PNV";
+
+    return code;
+};
 ---
 
 <section class="participation-dashboard">
@@ -114,7 +152,12 @@ const pctVotesCastYesNo =
                     brokenBlocks.map((item) => (
                         <div class="fuga-item">
                             <div class="fuga-head">
-                                <span class="party-tag">{item.party}</span>
+                                <span
+                                    class="party-tag"
+                                    style={`background-color: #fff; color: ${getPartyConfig(item.party).color}; border-color: ${getPartyConfig(item.party).color}`}
+                                >
+                                    {getFormationName(item.party)}
+                                </span>
                             </div>
                             <a href={item.initiative.enlace} class="fuga-title">
                                 {item.initiative.titulo}

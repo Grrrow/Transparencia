@@ -64,6 +64,24 @@ const getStatusColor = (status: string) => {
 };
 
 const statusColor = getStatusColor(initiative.resultado_tram || "");
+
+// Helper to map Group Codes to Formation Names
+const getFormationName = (code: string) => {
+    // Keep GMx as is (User Request)
+    if (code === "GMx") return "GMx";
+
+    // Map others
+    if (code === "GS") return "PSOE";
+    if (code === "GP") return "PP";
+    if (code === "GVOX") return "VOX";
+    if (code === "GSUMAR") return "SUMAR";
+    if (code === "GR") return "ERC";
+    if (code === "GJxCAT") return "Junts";
+    if (code === "GEH Bildu") return "Bildu";
+    if (code === "GV (EAJ-PNV)") return "PNV";
+
+    return code;
+};
 ---
 
 <article class="initiative-strip-card">
@@ -134,7 +152,7 @@ const statusColor = getStatusColor(initiative.resultado_tram || "");
                                     class="p-pill"
                                     style={`--pc: ${getPartyConfig(code)?.color || "#999"}`}
                                 >
-                                    {code}
+                                    {getFormationName(code)}
                                 </span>
                             ))}
                     </div>
@@ -155,7 +173,7 @@ const statusColor = getStatusColor(initiative.resultado_tram || "");
                                     class="p-pill"
                                     style={`--pc: ${getPartyConfig(code)?.color || "#999"}`}
                                 >
-                                    {code}
+                                    {getFormationName(code)}
                                 </span>
                             ))}
                     </div>
@@ -178,7 +196,7 @@ const statusColor = getStatusColor(initiative.resultado_tram || "");
                                     class="p-pill"
                                     style={`--pc: ${getPartyConfig(code)?.color || "#999"}`}
                                 >
-                                    {code}
+                                    {getFormationName(code)}
                                 </span>
                             ))}
                     </div>

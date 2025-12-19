@@ -48,6 +48,16 @@ const affinityStats = partners.map((p) => ({
                                 <span class="v-pill no">
                                     👎 {i.voting?.no || 0}
                                 </span>
+                                <span class="v-pill abs">
+                                    ✋ {i.voting?.abstentions || 0}
+                                </span>
+                                <span class="v-pill nv">
+                                    ∅{" "}
+                                    {350 -
+                                        ((i.voting?.yes || 0) +
+                                            (i.voting?.no || 0) +
+                                            (i.voting?.abstentions || 0))}
+                                </span>
                             </div>
                             <ConsensusBar
                                 value={i.consensusIndex}
@@ -79,6 +89,16 @@ const affinityStats = partners.map((p) => ({
                                 </span>
                                 <span class="v-pill no">
                                     👎 {i.voting?.no || 0}
+                                </span>
+                                <span class="v-pill abs">
+                                    ✋ {i.voting?.abstentions || 0}
+                                </span>
+                                <span class="v-pill nv">
+                                    ∅{" "}
+                                    {350 -
+                                        ((i.voting?.yes || 0) +
+                                            (i.voting?.no || 0) +
+                                            (i.voting?.abstentions || 0))}
                                 </span>
                             </div>
                             <ConsensusBar
@@ -241,6 +261,12 @@ const affinityStats = partners.map((p) => ({
     }
     .v-pill.no {
         color: #ef4444;
+    }
+    .v-pill.abs {
+        color: #f59e0b;
+    }
+    .v-pill.nv {
+        color: #9ca3af;
     }
 
     /* Affinity */

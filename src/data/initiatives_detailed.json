@@ -52,6 +52,10 @@
         "presentes": 350,
         "expectedMissing": 0,
         "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/rdl_003_2025.pdf"
       }
     },
     {
@@ -135,9 +139,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 346,
-        "expectedMissing": 4,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Puente Santiago, Óscar",
@@ -163,7 +164,14 @@
             "formacion": "PSOE",
             "codParlamentario": 127
           }
-        ]
+        ],
+        "presentes": 346,
+        "expectedMissing": 4,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/rdl_005_2025.pdf"
       }
     },
     {
@@ -224,9 +232,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 349,
-        "expectedMissing": 1,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Rodríguez de Millán Parro, María José",
@@ -234,7 +239,14 @@
             "formacion": "VOX",
             "codParlamentario": 344
           }
-        ]
+        ],
+        "presentes": 349,
+        "expectedMissing": 1,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/rdl_004_2025.pdf"
       }
     },
     {
@@ -317,9 +329,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 346,
-        "expectedMissing": 4,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Fernández Hernández, Pedro",
@@ -345,7 +354,14 @@
             "formacion": "PSOE",
             "codParlamentario": 127
           }
-        ]
+        ],
+        "presentes": 346,
+        "expectedMissing": 4,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/rdl_011_2025.pdf"
       }
     },
     {
@@ -414,9 +430,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 348,
-        "expectedMissing": 2,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Mariscal Anaya, Guillermo",
@@ -430,7 +443,14 @@
             "formacion": "EAJ-PNV",
             "codParlamentario": 306
           }
-        ]
+        ],
+        "presentes": 348,
+        "expectedMissing": 2,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/rdl_010_2025.pdf"
       }
     },
     {
@@ -499,9 +519,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 348,
-        "expectedMissing": 2,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Pozueta Fernández, Isabel",
@@ -515,7 +532,14 @@
             "formacion": "JxCAT-JUNTS",
             "codParlamentario": 244
           }
-        ]
+        ],
+        "presentes": 348,
+        "expectedMissing": 2,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/rdl_007_2025.pdf"
       }
     },
     {
@@ -584,9 +608,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 348,
-        "expectedMissing": 2,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Pozueta Fernández, Isabel",
@@ -600,7 +621,14 @@
             "formacion": "JxCAT-JUNTS",
             "codParlamentario": 244
           }
-        ]
+        ],
+        "presentes": 348,
+        "expectedMissing": 2,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/rdl_006_2025.pdf"
       }
     },
     {
@@ -681,9 +709,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 346,
-        "expectedMissing": 4,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Núñez Feijóo, Alberto",
@@ -709,7 +734,14 @@
             "formacion": "PP",
             "codParlamentario": 180
           }
-        ]
+        ],
+        "presentes": 346,
+        "expectedMissing": 4,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/rdl_009_2025.pdf"
       }
     },
     {
@@ -763,6 +795,10 @@
         "presentes": 350,
         "expectedMissing": 0,
         "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/rdl_002_2025.pdf"
       }
     },
     {
@@ -839,9 +875,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 347,
-        "expectedMissing": 3,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Pozueta Fernández, Isabel",
@@ -861,7 +894,14 @@
             "formacion": "JxCAT-JUNTS",
             "codParlamentario": 244
           }
-        ]
+        ],
+        "presentes": 347,
+        "expectedMissing": 3,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/rdl_008_2025.pdf"
       }
     },
     {
@@ -922,9 +962,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 349,
-        "expectedMissing": 1,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Sánchez Pérez-Castejón, Pedro",
@@ -932,7 +969,14 @@
             "formacion": "PSOE",
             "codParlamentario": 189
           }
-        ]
+        ],
+        "presentes": 349,
+        "expectedMissing": 1,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/rdl_001_2025.pdf"
       }
     },
     {
@@ -992,9 +1036,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 349,
-        "expectedMissing": 1,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Ábalos Meco, José Luis",
@@ -1002,7 +1043,14 @@
             "formacion": "PSOE",
             "codParlamentario": 127
           }
-        ]
+        ],
+        "presentes": 349,
+        "expectedMissing": 1,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/rdl_011_2024.pdf"
       }
     },
     {
@@ -1064,9 +1112,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 349,
-        "expectedMissing": 1,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Ábalos Meco, José Luis",
@@ -1074,7 +1119,14 @@
             "formacion": "PSOE",
             "codParlamentario": 127
           }
-        ]
+        ],
+        "presentes": 349,
+        "expectedMissing": 1,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/rdl_010_2024.pdf"
       }
     },
     {
@@ -1135,9 +1187,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 349,
-        "expectedMissing": 1,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Ábalos Meco, José Luis",
@@ -1145,7 +1194,14 @@
             "formacion": "PSOE",
             "codParlamentario": 127
           }
-        ]
+        ],
+        "presentes": 349,
+        "expectedMissing": 1,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/rdl_009_2024.pdf"
       }
     },
     {
@@ -1204,9 +1260,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 349,
-        "expectedMissing": 1,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Ábalos Meco, José Luis",
@@ -1214,7 +1267,14 @@
             "formacion": "PSOE",
             "codParlamentario": 127
           }
-        ]
+        ],
+        "presentes": 349,
+        "expectedMissing": 1,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/rdl_008_2024.pdf"
       }
     },
     {
@@ -1283,9 +1343,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 348,
-        "expectedMissing": 2,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Ortega Smith-Molina, Francisco Javier",
@@ -1299,7 +1356,14 @@
             "formacion": "JxCAT-JUNTS",
             "codParlamentario": 244
           }
-        ]
+        ],
+        "presentes": 348,
+        "expectedMissing": 2,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/l_005_2025.pdf"
       }
     },
     {
@@ -1406,9 +1470,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 343,
-        "expectedMissing": 7,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Agirretxea Urresti, Joseba Andoni",
@@ -1452,8 +1513,12 @@
             "formacion": "SUMAR",
             "codParlamentario": 169
           }
-        ]
-      }
+        ],
+        "presentes": 343,
+        "expectedMissing": 7,
+        "votacionesCount": 350
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -1567,9 +1632,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 339,
-        "expectedMissing": 11,
-        "votacionesCount": 349,
         "noVote": [
           {
             "apellidosNombre": "Santana Perera, Noemí",
@@ -1625,7 +1687,14 @@
             "formacion": "EAJ-PNV",
             "codParlamentario": 303
           }
-        ]
+        ],
+        "presentes": 339,
+        "expectedMissing": 11,
+        "votacionesCount": 349
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/l_007_2024.pdf"
       }
     },
     {
@@ -1719,9 +1788,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 345,
-        "expectedMissing": 5,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Montero Cuadrado, María Jesús",
@@ -1753,7 +1819,14 @@
             "formacion": "SUMAR",
             "codParlamentario": 169
           }
-        ]
+        ],
+        "presentes": 345,
+        "expectedMissing": 5,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/l_004_2025.pdf"
       }
     },
     {
@@ -1816,9 +1889,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 349,
-        "expectedMissing": 1,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Cruset Domènech, Josep Maria",
@@ -1826,7 +1896,14 @@
             "formacion": "JxCAT-JUNTS",
             "codParlamentario": 244
           }
-        ]
+        ],
+        "presentes": 349,
+        "expectedMissing": 1,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/l_007_2025.pdf"
       }
     },
     {
@@ -1893,9 +1970,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 348,
-        "expectedMissing": 2,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Núñez Feijóo, Alberto",
@@ -1909,7 +1983,14 @@
             "formacion": "PSOE",
             "codParlamentario": 189
           }
-        ]
+        ],
+        "presentes": 348,
+        "expectedMissing": 2,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/l_002_2025.pdf"
       }
     },
     {
@@ -1976,9 +2057,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 348,
-        "expectedMissing": 2,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Núñez Feijóo, Alberto",
@@ -1992,7 +2070,14 @@
             "formacion": "EH Bildu",
             "codParlamentario": 290
           }
-        ]
+        ],
+        "presentes": 348,
+        "expectedMissing": 2,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/lo_006_2024.pdf"
       }
     },
     {
@@ -2089,9 +2174,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 344,
-        "expectedMissing": 6,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Díaz Pérez, Yolanda",
@@ -2129,7 +2211,14 @@
             "formacion": "SUMAR",
             "codParlamentario": 169
           }
-        ]
+        ],
+        "presentes": 344,
+        "expectedMissing": 6,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/lo_002_2025.pdf"
       }
     },
     {
@@ -2188,9 +2277,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 348,
-        "expectedMissing": 2,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Ábalos Meco, José Luis",
@@ -2198,7 +2284,14 @@
             "formacion": "PSOE",
             "codParlamentario": 127
           }
-        ]
+        ],
+        "presentes": 348,
+        "expectedMissing": 2,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/l_008_2025.pdf"
       }
     },
     {
@@ -2319,9 +2412,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 341,
-        "expectedMissing": 9,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Bolaños García, Félix",
@@ -2377,7 +2467,14 @@
             "formacion": "SUMAR",
             "codParlamentario": 292
           }
-        ]
+        ],
+        "presentes": 341,
+        "expectedMissing": 9,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/l_003_2025.pdf"
       }
     },
     {
@@ -2445,9 +2542,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 348,
-        "expectedMissing": 2,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Pisarello Prados, Gerardo",
@@ -2461,7 +2555,14 @@
             "formacion": "VOX",
             "codParlamentario": 294
           }
-        ]
+        ],
+        "presentes": 348,
+        "expectedMissing": 2,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/lo_001_2025.pdf"
       }
     },
     {
@@ -2545,9 +2646,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 345,
-        "expectedMissing": 5,
-        "votacionesCount": 349,
         "noVote": [
           {
             "apellidosNombre": "Álvarez de Toledo Peralta-Ramos, Cayetana",
@@ -2573,7 +2671,14 @@
             "formacion": "PP",
             "codParlamentario": 346
           }
-        ]
+        ],
+        "presentes": 345,
+        "expectedMissing": 5,
+        "votacionesCount": 349
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/l_009_2025.pdf"
       }
     },
     {
@@ -2648,9 +2753,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 346,
-        "expectedMissing": 4,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Ábalos Meco, José Luis",
@@ -2670,8 +2772,12 @@
             "formacion": "PSOE",
             "codParlamentario": 189
           }
-        ]
-      }
+        ],
+        "presentes": 346,
+        "expectedMissing": 4,
+        "votacionesCount": 350
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -2765,9 +2871,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 344,
-        "expectedMissing": 6,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Bravo Baena, Juan",
@@ -2805,7 +2908,14 @@
             "formacion": "PSIB-PSOE",
             "codParlamentario": 185
           }
-        ]
+        ],
+        "presentes": 344,
+        "expectedMissing": 6,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/l_001_2025.pdf"
       }
     },
     {
@@ -2828,7 +2938,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -2848,7 +2959,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -2983,9 +3095,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 339,
-        "expectedMissing": 11,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Hoyo Juliá, Belén",
@@ -3053,8 +3162,12 @@
             "formacion": "PP",
             "codParlamentario": 156
           }
-        ]
-      }
+        ],
+        "presentes": 339,
+        "expectedMissing": 11,
+        "votacionesCount": 350
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3146,9 +3259,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 345,
-        "expectedMissing": 5,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Núñez Feijóo, Alberto",
@@ -3180,8 +3290,12 @@
             "formacion": "PSOE",
             "codParlamentario": 127
           }
-        ]
-      }
+        ],
+        "presentes": 345,
+        "expectedMissing": 5,
+        "votacionesCount": 350
+      },
+      "boeLink": null
     },
     {
       "atis": "Función legislativa",
@@ -3203,7 +3317,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3223,7 +3338,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3243,7 +3359,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3263,7 +3380,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3283,7 +3401,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3303,7 +3422,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3378,9 +3498,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 347,
-        "expectedMissing": 3,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Trenzano Rubio, Marta",
@@ -3400,8 +3517,12 @@
             "formacion": "PSOE",
             "codParlamentario": 337
           }
-        ]
-      }
+        ],
+        "presentes": 347,
+        "expectedMissing": 3,
+        "votacionesCount": 350
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3475,9 +3596,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 347,
-        "expectedMissing": 3,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Sánchez Pérez-Castejón, Pedro",
@@ -3497,8 +3615,12 @@
             "formacion": "PSOE",
             "codParlamentario": 337
           }
-        ]
-      }
+        ],
+        "presentes": 347,
+        "expectedMissing": 3,
+        "votacionesCount": 350
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3572,9 +3694,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 347,
-        "expectedMissing": 3,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Sánchez Pérez-Castejón, Pedro",
@@ -3594,8 +3713,12 @@
             "formacion": "PSOE",
             "codParlamentario": 337
           }
-        ]
-      }
+        ],
+        "presentes": 347,
+        "expectedMissing": 3,
+        "votacionesCount": 350
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3615,7 +3738,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3691,9 +3815,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 347,
-        "expectedMissing": 3,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Sánchez Pérez-Castejón, Pedro",
@@ -3713,8 +3834,12 @@
             "formacion": "SUMAR",
             "codParlamentario": 327
           }
-        ]
-      }
+        ],
+        "presentes": 347,
+        "expectedMissing": 3,
+        "votacionesCount": 350
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3734,7 +3859,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3808,9 +3934,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 347,
-        "expectedMissing": 3,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Sánchez Pérez-Castejón, Pedro",
@@ -3830,8 +3953,12 @@
             "formacion": "PSOE",
             "codParlamentario": 337
           }
-        ]
-      }
+        ],
+        "presentes": 347,
+        "expectedMissing": 3,
+        "votacionesCount": 350
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3884,7 +4011,8 @@
         "presentes": 350,
         "expectedMissing": 0,
         "votacionesCount": 350
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3904,7 +4032,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3924,7 +4053,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -3944,7 +4074,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -4043,9 +4174,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 344,
-        "expectedMissing": 6,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Núñez Feijóo, Alberto",
@@ -4083,8 +4211,12 @@
             "formacion": "PSOE",
             "codParlamentario": 90
           }
-        ]
-      }
+        ],
+        "presentes": 344,
+        "expectedMissing": 6,
+        "votacionesCount": 350
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -4104,7 +4236,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -4124,7 +4257,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -4222,9 +4356,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 344,
-        "expectedMissing": 6,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Velarde Gómez, Martina",
@@ -4262,8 +4393,12 @@
             "formacion": "VOX",
             "codParlamentario": 263
           }
-        ]
-      }
+        ],
+        "presentes": 344,
+        "expectedMissing": 6,
+        "votacionesCount": 350
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -4359,9 +4494,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 343,
-        "expectedMissing": 7,
-        "votacionesCount": 349,
         "noVote": [
           {
             "apellidosNombre": "Santana Perera, Noemí",
@@ -4399,8 +4531,12 @@
             "formacion": "PSOE",
             "codParlamentario": 127
           }
-        ]
-      }
+        ],
+        "presentes": 343,
+        "expectedMissing": 7,
+        "votacionesCount": 349
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -4420,7 +4556,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -4440,7 +4577,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -4460,7 +4598,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -4558,9 +4697,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 344,
-        "expectedMissing": 6,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Sánchez Pérez-Castejón, Pedro",
@@ -4598,8 +4734,12 @@
             "formacion": "SUMAR",
             "codParlamentario": 328
           }
-        ]
-      }
+        ],
+        "presentes": 344,
+        "expectedMissing": 6,
+        "votacionesCount": 350
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -4619,7 +4759,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -4639,7 +4780,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -4713,9 +4855,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 347,
-        "expectedMissing": 3,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Sánchez Pérez-Castejón, Pedro",
@@ -4735,7 +4874,14 @@
             "formacion": "SUMAR",
             "codParlamentario": 342
           }
-        ]
+        ],
+        "presentes": 347,
+        "expectedMissing": 3,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/lo_003_2025.pdf"
       }
     },
     {
@@ -4833,9 +4979,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 344,
-        "expectedMissing": 6,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Bolaños García, Félix",
@@ -4873,8 +5016,12 @@
             "formacion": "PSIB-PSOE",
             "codParlamentario": 185
           }
-        ]
-      }
+        ],
+        "presentes": 344,
+        "expectedMissing": 6,
+        "votacionesCount": 350
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -4991,9 +5138,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 340,
-        "expectedMissing": 10,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Velarde Gómez, Martina",
@@ -5049,7 +5193,14 @@
             "formacion": "SUMAR",
             "codParlamentario": 328
           }
-        ]
+        ],
+        "presentes": 340,
+        "expectedMissing": 10,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/l_006_2024.pdf"
       }
     },
     {
@@ -5154,9 +5305,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 343,
-        "expectedMissing": 7,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Montero Cuadrado, María Jesús",
@@ -5200,8 +5348,12 @@
             "formacion": "PP",
             "codParlamentario": 349
           }
-        ]
-      }
+        ],
+        "presentes": 343,
+        "expectedMissing": 7,
+        "votacionesCount": 350
+      },
+      "boeLink": null
     },
     {
       "atis": "Función legislativa",
@@ -5293,9 +5445,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 345,
-        "expectedMissing": 5,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Pisarello Prados, Gerardo",
@@ -5327,8 +5476,12 @@
             "formacion": "PP",
             "codParlamentario": 346
           }
-        ]
-      }
+        ],
+        "presentes": 345,
+        "expectedMissing": 5,
+        "votacionesCount": 350
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -5348,7 +5501,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -5368,7 +5522,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -5388,7 +5543,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -5408,7 +5564,8 @@
         "no": null,
         "abstentions": null,
         "jsonUrl": null
-      }
+      },
+      "boeLink": null
     },
     {
       "legislatura": "XV",
@@ -5520,9 +5677,6 @@
             "status": "no-vota"
           }
         ],
-        "presentes": 342,
-        "expectedMissing": 8,
-        "votacionesCount": 350,
         "noVote": [
           {
             "apellidosNombre": "Conde López, Francisco José",
@@ -5572,7 +5726,14 @@
             "formacion": "PSOE",
             "codParlamentario": 127
           }
-        ]
+        ],
+        "presentes": 342,
+        "expectedMissing": 8,
+        "votacionesCount": 350
+      },
+      "boeLink": {
+        "text": "(PDF)",
+        "url": "https://www.congreso.es/constitucion/ficheros/leyes_espa/l_006_2025.pdf"
       }
     }
   ]

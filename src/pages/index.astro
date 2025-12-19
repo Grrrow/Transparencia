@@ -7,6 +7,7 @@ import ConsensusDashboard from "../components/ConsensusDashboard.astro";
 import ParticipationDashboard from "../components/ParticipationDashboard.astro";
 import ActivityFeed from "../components/ActivityFeed.astro";
 import InitiativesPieChart from "../components/charts/InitiativesPieChart.astro";
+import HemicycleChart from "../components/charts/HemicycleChart.astro";
 
 import politicians from "../data/politicians.json";
 import activities from "../data/activities.json";
@@ -44,6 +45,10 @@ const globalStats = [
 				actividad parlamentaria, propuestas y votaciones de nuestros
 				políticos.
 			</p>
+
+			<div class="hero-chart">
+				<HemicycleChart />
+			</div>
 		</div>
 	</section>
 
